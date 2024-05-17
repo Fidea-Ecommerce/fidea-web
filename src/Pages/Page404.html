@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 Not Found</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #ebebeb;
+      }
+      .text-greenprime {
+        color: #2f3416; /* Ubah kode warna sesuai kebutuhan */
+      }
+      .border-slate-400 {
+        border-color: #6b7280;
+      }
+      .bg-greenprime {
+        background-color: #2f3416; /* Ubah kode warna sesuai kebutuhan */
+      }
+      .text-gray-400 {
+        color: #6b7280;
+      }
+      .text-gray-500 {
+        color: #6b7280;
+      }
+      .hover\:underline:hover {
+        text-decoration: underline;
+      }
+      .group:hover .group-hover\:underline {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mt-20 flex min-h-screen justify-center">
+      <div class="flex flex-col">
+        <!-- Error Container -->
+        <div class="flex flex-col items-center">
+          <div class="text-7xl font-bold text-greenprime">404</div>
+          <div
+            class="mt-10 text-2xl font-bold md:text-5xl lg:text-6xl xl:text-7xl"
+          >
+            This page does not exist
+          </div>
+          <div
+            class="mt-8 text-sm font-medium text-gray-400 md:text-xl lg:text-2xl"
+          >
+            The page you are looking for could not be found.
+          </div>
+        </div>
+        <!-- Continue With -->
+        <div class="mt-20 flex flex-col">
+          <div class="pt-7 font-bold uppercase text-gray-400 sm:pt-16">
+            Continue With
+          </div>
+          <div class="mt-5 flex flex-col items-stretch">
+            <!-- Nav Item #1 -->
+            <div
+              class="group flex flex-row border-t-2 border-slate-400 px-4 py-8 transition-all delay-100 duration-200 hover:cursor-pointer"
+            >
+              <!-- Nav Icon -->
+              <div class="rounded-xl bg-greenprime px-3 py-2 md:py-4">
+                <i class="bx bxs-home text-white" style="font-size: 40px"></i>
+              </div>
+              <!-- Text -->
+              <div class="flex grow flex-col pl-5 pt-2">
+                <a
+                  href="/"
+                  class="text-sm font-bold group-hover:underline md:text-lg lg:text-xl"
+                  >Home Page</a
+                >
+                <div
+                  class="md:text-md text-sm font-semibold text-gray-400 transition-all delay-100 duration-200 group-hover:text-gray-500 lg:text-lg"
+                >
+                  Mulai dari sini
+                </div>
+              </div>
+            </div>
+            <!-- Nav Item #2 -->
+            <div
+              class="group flex flex-row border-t-2 border-slate-400 px-4 py-8 transition-all delay-100 duration-200 hover:cursor-pointer"
+            >
+              <!-- Nav Icon -->
+              <div class="rounded-xl bg-greenprime px-3 py-2 md:py-4">
+                <i
+                  class="bx bxs-package text-white"
+                  style="font-size: 40px"
+                ></i>
+              </div>
+              <!-- Text -->
+              <a href="/products" class="flex grow flex-col pl-5 pt-2">
+                <div
+                  class="text-sm font-bold group-hover:underline md:text-lg lg:text-xl"
+                >
+                  Products
+                </div>
+                <div
+                  class="md:text-md text-sm font-semibold text-gray-400 transition-all delay-100 duration-200 group-hover:text-gray-500 lg:text-lg"
+                >
+                  Lihat produk unggulan kami
+                </div>
+              </a>
+            </div>
+            <!-- Nav Item #3 -->
+            <div
+              class="group flex flex-row border-t-2 border-slate-400 px-4 py-8 transition-all delay-100 duration-200 hover:cursor-pointer"
+            >
+              <!-- Nav Icon -->
+              <div class="rounded-xl bg-greenprime px-3 py-2 md:py-4">
+                <i
+                  class="bx bxs-cart-alt text-white"
+                  style="font-size: 40px"
+                ></i>
+              </div>
+              <!-- Text -->
+              <a href="/cart" class="flex grow flex-col pl-5 pt-2">
+                <div
+                  class="text-sm font-bold group-hover:underline md:text-lg lg:text-xl"
+                >
+                  Cart
+                </div>
+                <div
+                  class="md:text-md text-sm font-semibold text-gray-400 transition-all delay-100 duration-200 group-hover:text-gray-500 lg:text-lg"
+                >
+                  Periksa kembali keranjangmu
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

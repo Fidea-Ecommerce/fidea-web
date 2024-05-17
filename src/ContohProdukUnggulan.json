@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "Sofa Bed",
+    "description": "Comfortable sofa bed for your living room or guest room.",
+    "price": "999.99"
+  },
+  {
+    "id": 2,
+    "title": "Coffee Table",
+    "description": "Modern coffee table to enhance your living room decor.",
+    "price": "299.99"
+  },
+  {
+    "id": 3,
+    "title": "Dining Set",
+    "description": "Elegant dining set for your family gatherings and meals.",
+    "price": "1499.99"
+  },
+  {
+    "id": 4,
+    "title": "Wardrobe",
+    "description": "Spacious wardrobe with ample storage for your clothes and accessories.",
+    "price": "799.99"
+  },
+  {
+    "id": 5,
+    "title": "Desk",
+    "description": "Functional desk for your home office or study area.",
+    "price": "499.99"
+  }
+]

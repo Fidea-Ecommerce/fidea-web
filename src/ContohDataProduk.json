@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "title": "Product 1",
+    "description": "Description of Product 1",
+    "price": "999.000"
+  },
+  {
+    "id": 2,
+    "title": "Product 2",
+    "description": "Description of Product 2",
+    "price": "1.999.000"
+  },
+  {
+    "id": 3,
+    "title": "Product 3",
+    "description": "Description of Product 3",
+    "price": "1.499.000"
+  },
+  {
+    "id": 4,
+    "title": "Product 4",
+    "description": "Description of Product 4",
+    "price": "2.499.000"
+  },
+  {
+    "id": 5,
+    "title": "Product 5",
+    "description": "Description of Product 5",
+    "price": "1.199.000"
+  },
+  {
+    "id": 6,
+    "title": "Product 6",
+    "description": "Description of Product 6",
+    "price": "1.899.000"
+  },
+  {
+    "id": 7,
+    "title": "Product 7",
+    "description": "Description of Product 7",
+    "price": "999.000"
+  },
+  {
+    "id": 8,
+    "title": "Product 8",
+    "description": "Description of Product 8",
+    "price": "1.599.000"
+  },
+  {
+    "id": 9,
+    "title": "Product 9",
+    "description": "Description of Product 9",
+    "price": "2.299.000"
+  },
+  {
+    "id": 10,
+    "title": "Product 10",
+    "description": "Description of Product 10",
+    "price": "1.499.000"
+  },
+  {
+    "id": 11,
+    "title": "Product 11",
+    "description": "Description of Product 11",
+    "price": "1.999.000"
+  },
+  {
+    "id": 12,
+    "title": "Product 12",
+    "description": "Description of Product 12",
+    "price": "2.499.000"
+  },
+  {
+    "id": 13,
+    "title": "Product 13",
+    "description": "Description of Product 13",
+    "price": "1.299.000"
+  },
+  {
+    "id": 14,
+    "title": "Product 14",
+    "description": "Description of Product 14",
+    "price": "1.699.000"
+  },
+  {
+    "id": 15,
+    "title": "Product 15",
+    "description": "Description of Product 15",
+    "price": "2.199.000"
+  }
+]
