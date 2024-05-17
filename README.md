@@ -14,7 +14,7 @@
 
 
 <p align="center">
-<a href="https://github.com/ShaanCoding">📱 Visit this Project</a>
+<a href="https://ecommerce-web-gilt.vercel.app">📱 Visit this Project</a>
 </p>
  
 <h2 id="layout">🎨 Layout</h2>
