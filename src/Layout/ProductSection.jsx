@@ -71,38 +71,40 @@ const ProductSection = () => {
   };
 
   return (
-    <section className="h-fit w-screen bg-[#EBEBEB]">
-      <h1 className="py-2 text-center text-xl font-bold md:py-10 md:text-4xl">
-        Our Product
-      </h1>
+    <section className="flex h-screen w-screen flex-col items-center justify-center bg-[#EBEBEB]">
+      <div>
+        <h1 className="py-2 text-center text-xl font-bold md:py-10 md:text-4xl">
+          Our Product
+        </h1>
 
-      <div className="flex w-full items-center justify-center">
-        <div className="w-[90%]">
-          {isLoading ? (
-            <div className="flex h-72 items-center justify-center">
-              <p className="text-center text-lg  font-semibold">Loading...</p>
-            </div>
-          ) : (
-            <Slider
-              {...settings}
-              className="ml-5 flex items-center justify-center lg:pl-20"
-            >
-              {list.map((product) => (
-                <div key={product.id} className="flex justify-center">
-                  <Card product={product} />
-                </div>
-              ))}
-            </Slider>
-          )}
+        <div className="flex w-full items-center justify-center">
+          <div className="w-[90%]">
+            {isLoading ? (
+              <div className="flex h-72 items-center justify-center">
+                <p className="text-center text-lg  font-semibold">Loading...</p>
+              </div>
+            ) : (
+              <Slider
+                {...settings}
+                className="ml-5 flex items-center justify-center lg:pl-20"
+              >
+                {list.map((product) => (
+                  <div key={product.id} className="flex justify-center">
+                    <Card product={product} />
+                  </div>
+                ))}
+              </Slider>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="flex justify-center">
-        <Link
-          to="/products"
-          className="mt-5 rounded-3xl bg-greenprime px-8 py-4 text-xl font-semibold text-white"
-        >
-          SHOW MORE
-        </Link>
+        <div className="flex justify-center">
+          <Link
+            to="/products"
+            className="mt-5 rounded-3xl bg-greenprime px-8 py-4 text-xl font-semibold text-white"
+          >
+            SHOW MORE
+          </Link>
+        </div>
       </div>
     </section>
   );
