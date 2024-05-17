@@ -7,6 +7,7 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoginBG from "../assets/LoginBG.webp";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -110,7 +111,7 @@ const LoginPage = () => {
       {/* Bagian untuk gambar */}
       <div className="hidden lg:block lg:w-[600px]">
         <img
-          src="src/assets/LoginBG.webp"
+          src={LoginBG}
           alt="login image"
           className="h-full w-full rounded-3xl object-cover object-center"
         />

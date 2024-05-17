@@ -5,6 +5,7 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import RegisterBG from "../assets/RegisterBG.webp";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -263,7 +264,7 @@ const RegisterPage = () => {
       {/* Bagian untuk gambar */}
       <div className="hidden lg:block lg:w-[600px]">
         <img
-          src="../src/assets/RegisterBG.webp"
+          src={RegisterBG}
           alt="register image"
           className="h-full w-full rounded-3xl object-cover object-center"
         />
