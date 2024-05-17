@@ -128,16 +128,6 @@ const DetailSection = ({ custom }) => {
     }
   };
 
-  console.log("isActive:", typeof isActive);
-  console.log("id:", typeof id);
-  console.log("product:", typeof product);
-  console.log("notFound:", typeof notFound);
-  console.log("isInWishlist:", typeof isInWishlist);
-  console.log("amount:", typeof amount);
-  console.log("stock:", typeof stock);
-  console.log("user:", typeof user);
-  console.log("token:", typeof token);
-
   return (
     <section
       className={`mb-0  h-fit min-h-screen rounded-3xl border border-slate-300 bg-white p-10 sm:m-10  ${custom}`}
