@@ -21,8 +21,8 @@
 
 <p align="center">
 
-<img src="[https://source.unsplash.com/random](https://cdn.discordapp.com/attachments/1161673891098415134/1241058167811735593/image.png?" alt="landing page" width="400px">
-<img src="https://cdn.discordapp.com/attachments/1161673891098415134/1241058862098944050/image.png?" alt="Random Image" width="400px">
+<img src="https://cdn.discordapp.com/attachments/1161673891098415134/1241058167811735593/image.png?ex=6648d0fc&is=66477f7c&hm=573e83cd338a96863a6d47469643d2163625f7eb2754bf8f24ba1147edd374e9" alt="landing page" width="400px">
+<img src="https://cdn.discordapp.com/attachments/1161673891098415134/1241058862098944050/image.png?ex=6648d1a2&is=66478022&hm=6e630b922c45cda17e74287753d02aca8f512a17ce46934cd0f76b7d6e5ae7a3" alt="Random Image" width="400px">
 </p>
  
 <h2 id="technologies">💻 Technologies</h2>
