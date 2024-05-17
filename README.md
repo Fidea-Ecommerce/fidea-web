@@ -21,8 +21,8 @@
 
 <p align="center">
 
-<img src="https://source.unsplash.com/random" alt="Random Image" width="400px">
-<img src="https://source.unsplash.com/random" alt="Random Image" width="400px">
+<img src="[https://source.unsplash.com/random](https://cdn.discordapp.com/attachments/1161673891098415134/1241058167811735593/image.png?" alt="landing page" width="400px">
+<img src="https://cdn.discordapp.com/attachments/1161673891098415134/1241058862098944050/image.png?" alt="Random Image" width="400px">
 </p>
  
 <h2 id="technologies">💻 Technologies</h2>
