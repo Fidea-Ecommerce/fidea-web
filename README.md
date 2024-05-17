@@ -10,7 +10,7 @@
 </p>
 
 
-<p align="center">This repository contains the source code for the front-end of a fullstack e-commerce website project, developed as a university assignment for the course [course name] at [university name]. The goal of this project is to create a functional and user-friendly e-commerce web application using modern web technologies.</p>
+<p align="center">This repository contains the source code for the front-end of a fullstack e-commerce website project, developed as a university assignment . The goal of this project is to create a functional and user-friendly e-commerce web application using modern web technologies.</p>
 
 
 <p align="center">
