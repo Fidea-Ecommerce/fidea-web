@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoginBG from "../assets/LoginBG.webp";
 
@@ -15,6 +14,8 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -22,26 +23,43 @@ const LoginPage = () => {
   };
 
   const apiLogin = async (email, password) => {
-    const response = await fetch(
-      `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/login/${email}/${password}`,
-    );
-    const data = await response.json();
-    if (data["status_code"] === 200) {
-      return data["result"]["token"];
-    } else {
-      toast.error("Wrong email or password");
-      return false;
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const url = 'https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/login';
+    const data = {
+      email: email,
+      password: password,
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(data)
+      });
+
+      const resp = await response.json();
+      console.log(resp)
+      if (resp['status_code'] === 200) {
+        return {"status": true, "result": resp.result}
+      } else {
+        return {"status": false, "result": null}
+      }
+    } catch (error) {
+      return {"status": false, "result": null}
     }
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true)
     const result = await apiLogin(email, password);
-    if (result) {
-      console.log(result);
-      Cookies.set("access_token", result);
+    if (result['status']) {
+      Cookies.set("access_token", result['result'].access_token);
+      Cookies.set("refresh_token", result['result'].refresh_token);
       navigate("/");
     }
+    setLoading(false)
   };
   return (
     <div className="flex h-screen max-h-screen w-screen flex-col justify-between bg-white p-5 lg:flex-row lg:p-14">
@@ -52,7 +70,7 @@ const LoginPage = () => {
         </h1>
         <WebLogo></WebLogo>
         <p className="my-10 font-semibold">Please enter your details</p>
-        <form className=" sm:w-3/4 lg:w-4/5" onSubmit={handleLogin}>
+        <form className=" sm:w-3/4 lg:w-4/5" onSubmit={loading ? null : handleLogin}>
           {/* Menggunakan komponen InputForm untuk email */}
           <input
             type="text"
@@ -116,7 +134,6 @@ const LoginPage = () => {
           className="h-full w-full rounded-3xl object-cover object-center"
         />
       </div>
-      <ToastContainer></ToastContainer>
     </div>
   );
 };
