@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Cookies from "js-cookie";
+import { jwtDecode } from 'jwt-decode';
 
 // !untuk sementara menggunakan data dummy json
 // import productsData from "../ContohDataProduk.json";
@@ -11,6 +13,16 @@ import "slick-carousel/slick/slick-theme.css";
 const ProductSection = () => {
   const [list, setList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [user, setUser] = useState({})
+
+  useEffect(() => {
+    const accessToken = Cookies.get('access_token');
+    if (accessToken) {
+      const decodedToken = jwtDecode(accessToken);
+      setUser(decodedToken)
+    }
+  }, [setUser]);
 
   useEffect(() => {
     const getProduct = async (username) => {
@@ -30,10 +42,6 @@ const ProductSection = () => {
       setIsLoading(false);
     };
     getProduct("nexblu");
-
-    // ! untuk sementara menggunakan data dummy
-
-    // setList(productsData);
   }, []);
 
   var settings = {

@@ -13,53 +13,81 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
-
   const [emailError, setEmailError] = useState(false);
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
-  const [messageEmailError, setMessageEmailError] = useState("");
-  const [messageUsernameError, setMessageUsernameError] = useState("");
-  const [messagePasswordError, setMessagePasswordError] = useState("");
-  const [messageConfirmPasswordError, setMessageConfirmPasswordError] =
-    useState("");
+  const [messageEmailError, setMessageEmailError] = useState('');
+  const [messageUsernameError, setMessageUsernameError] = useState('');
+  const [messagePasswordError, setMessagePasswordError] = useState('');
+  const [messageConfirmPasswordError, setMessageConfirmPasswordError] = useState('');
+
+  const [loading, setLoading] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const togglePasswordVisibility = async () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = async () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  const failedRegister = async () => {
+    toast.error("Failed Register", {
+        position: "bottom-right"
+    });
+}
+
+const successRegister = async () => {
+    toast.success("Check Your Email", {
+        position: "bottom-right"
+    });
+}
+
+  const clearForm = async () => {
+    setEmail('');
+    setUsername('');
+    setPassword('');
+    setConfirmPassword('');
+    setEmailError(false)
+    setUsernameError(false)
+    setPasswordError(false)
+    setConfirmPasswordError(false)
+    setMessageEmailError('')
+    setMessageUsernameError('')
+    setMessagePasswordError('')
+    setMessageConfirmPasswordError('')
+  }
 
   const validationForm = async () => {
     let valid = true;
 
-    if (email === "") {
+    if (email === '') {
       setEmailError(true);
       valid = false;
-      setMessageEmailError("Email Is Required.");
+      setMessageEmailError('Email Is Required.')
     } else {
-      setEmailError(false);
+      setEmailError(false)
     }
 
-    if (username === "") {
+    if (username === '') {
       setUsernameError(true);
       valid = false;
-      setMessageUsernameError("Username Is Required.");
+      setMessageUsernameError('Username Is Required.')
     } else {
       setUsernameError(false);
     }
 
-    if (password === "" && confirmPassword === "") {
+    if (password === '' && confirmPassword === '') {
       setPasswordError(true);
-      setConfirmPasswordError(true);
+      setConfirmPasswordError(true)
       valid = false;
-      setMessagePasswordError("Password Is Required.");
-      setMessageConfirmPasswordError("Password Is Required.");
+      setMessagePasswordError('Password Is Required.')
+      setMessageConfirmPasswordError('Password Is Required.')
     } else {
       if (password === confirmPassword) {
         setPasswordError(false);
@@ -68,92 +96,89 @@ const RegisterPage = () => {
         setPasswordError(true);
         setConfirmPasswordError(true);
         valid = false;
-        setMessagePasswordError("Password And Confirm Password Are Different.");
-        setMessageConfirmPasswordError(
-          "Password And Confirm Password Are Different.",
-        );
+        setMessagePasswordError('Password And Confirm Password Are Different.')
+        setMessageConfirmPasswordError('Password And Confirm Password Are Different.')
       }
     }
-
     return valid;
-  };
+  }
 
-  const emailSend = async (email) => {
+  const apiResgister = async (email, username, password, confirmPassword) => {
     const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    try {
-      const data = {
-        email: email,
-      };
-      const response = await fetch({
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(data),
-      });
-      const resp = await response.json();
-      if (resp["status_code"] === 201) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      return false;
-    }
-  };
+    headers.append('Content-Type', 'application/json');
+    const url = 'https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/register';
+    const data = {
+      username: username,
+      email: email,
+      password: password,
+      confirm_password: confirmPassword
+    };
 
-  const userRegister = async (email, username, password, confirmPassword) => {
     try {
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
-      const data = {
-        username: username,
-        email: email,
-        password: password,
-        confirm_password: confirmPassword,
-      };
-      const response = await fetch(
-        `https://web-production-795c.up.railway.app/todoplus/v1/register`,
-        {
-          method: "POST",
-          headers: headers,
-          body: JSON.stringify(data),
-        },
-      );
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(data)
+      });
+
       const resp = await response.json();
-      if (resp["status_code"] === 201) {
-        return true;
+      if (resp['status_code'] === 201) {
+        return true
       } else {
-        return false;
+        return false
       }
     } catch (error) {
-      return false;
+      return false
     }
-  };
+  }
+
+  const apiEmailVerify = async (email) => {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const url = 'https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/email-verify';
+    const data = {
+      email: email,
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(data)
+      });
+
+      const resp = await response.json();
+      console.log(resp)
+      if (resp['status_code'] === 201) {
+        return true
+      } else {
+        return false
+      }
+    } catch (error) {
+      return false
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (await validationForm()) {
-      if (await emailSend(email)) {
-        if (await userRegister(email, username, password, confirmPassword)) {
-          toast.success("Registrasi berhasil! check email anda");
-
-          setEmail("");
-          setUsername("");
-          setPassword("");
-          setConfirmPassword("");
-        } else {
-          // Handle registration failure
-          console.error("Registration failed.");
+    setLoading(true)
+    const validator = await validationForm()
+    if (validator) {
+      const resultRegister = await apiResgister(email, username, password, confirmPassword)
+      if (resultRegister) {
+        await clearForm()
+        const finalResult = await apiEmailVerify(email)
+        if (finalResult) {
+          await successRegister()
+          setLoading(false)
+          return
         }
-      } else {
-        // Handle email sending failure
-        console.error("Email sending failed.");
       }
-    } else {
-      // Handle validation failure
-      console.error("Form validation failed.");
     }
-  };
+    await failedRegister()
+    setLoading(false)
+  }
+
   return (
     <div className="flex h-screen max-h-screen w-screen flex-col justify-between   bg-white p-5 lg:flex-row lg:p-14">
       {/* Bagian untuk form */}
@@ -164,15 +189,14 @@ const RegisterPage = () => {
         {/* Logo (misalnya WebLogo) */}
         <WebLogo />
         <p className="my-5 font-semibold">Please enter your details</p>
-        <form className="sm:w-3/4 lg:w-4/5" onSubmit={handleSubmit}>
+        <form className="sm:w-3/4 lg:w-4/5" onSubmit={loading ? null : handleSubmit}>
           {/* Input untuk email */}
           <input
             type="text"
             name="email"
             placeholder="Email"
-            className={`mb-2 w-full rounded-full border ${
-              emailError ? "border-red-500" : "border-black"
-            } p-3 pl-8 text-lg text-slate-700 outline-none`}
+            className={`mb-2 w-full rounded-full border ${emailError ? "border-red-500" : "border-black"
+              } p-3 pl-8 text-lg text-slate-700 outline-none`}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -184,9 +208,8 @@ const RegisterPage = () => {
             type="text"
             name="username"
             placeholder="Username"
-            className={`mb-2 w-full rounded-full border ${
-              usernameError ? "border-red-500" : "border-black"
-            } p-3 pl-8 text-lg text-slate-700 outline-none`}
+            className={`mb-2 w-full rounded-full border ${usernameError ? "border-red-500" : "border-black"
+              } p-3 pl-8 text-lg text-slate-700 outline-none`}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
@@ -199,9 +222,8 @@ const RegisterPage = () => {
               type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Password"
-              className={`w-auto flex-1 border-none outline-none ${
-                passwordError ? "border-red-500" : "border-black"
-              }  text-slate-700`}
+              className={`w-auto flex-1 border-none outline-none ${passwordError ? "border-red-500" : "border-black"
+                }  text-slate-700`}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -222,9 +244,8 @@ const RegisterPage = () => {
               type={showConfirmPassword ? "text" : "password"}
               name="confirmPassword"
               placeholder="Confirm Password"
-              className={`w-auto flex-1 border-none outline-none ${
-                confirmPasswordError ? "border-red-500" : "border-black"
-              }  text-slate-700`}
+              className={`w-auto flex-1 border-none outline-none ${confirmPasswordError ? "border-red-500" : "border-black"
+                }  text-slate-700`}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
