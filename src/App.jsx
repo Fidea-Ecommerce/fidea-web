@@ -73,7 +73,7 @@ const App = () => {
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductPage />} />
-          <Route path="/products/detail/:id" element={<ProductDetail />} />
+          <Route path="/products/detail/:store/:storeId/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/resetpassword" element={<ResetPassword1 />} />
           <Route path="/products/result/:productName" element={<SearchResult />} />

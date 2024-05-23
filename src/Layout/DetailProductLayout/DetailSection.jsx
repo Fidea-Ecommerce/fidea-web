@@ -3,14 +3,14 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import MoreInfoProduct from "./MoreInfoProduct";
 import { Navigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
-
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+
 const DetailSection = ({ custom }) => {
   // mengambil ID dari routing lalu dicari ID  API card  menggunakan params, lalu merendernya
   const [isActive, setIsActive] = useState(false);
-  const { id } = useParams(); // Terima ID produk dari URL
+  let { store, storeId, id } = useParams(); // Terima ID produk dari URL
   const [product, setProduct] = useState();
   const [notFound, setNotFound] = useState(false);
   const [isInWishlist, setOnWishlist] = useState(false);
@@ -18,41 +18,40 @@ const DetailSection = ({ custom }) => {
   const [amount, setAmount] = useState(0); // state amount wishlist
   const [stock, setStock] = useState(0); // state stock product
 
-  // state user
-  const [user, setUser] = useState({});
-  const [token, setToken] = useState("");
-
-  useEffect(() => {
-    const accessToken = Cookies.get("access_token");
-    if (accessToken) {
-      const decodedToken = jwtDecode(accessToken);
-      setToken(accessToken);
-      setUser(decodedToken);
-    }
-  }, []);
+  const [token, setToken] = useState('')
 
   // mengambil data dari ecommerce-api
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/nexblu/${id}`, // Perbaiki URL untuk mengambil detail produk berdasarkan ID
-        );
-        const json = await response.json();
-        if (json.status_code === 200) {
-          setProduct(json.result); // Jika berhasil, atur state untuk menyimpan detail produk
-          setStock(json.result.stock); // Jika berhasil, atur state untuk menyimpan validasi stock
-        } else {
-          setNotFound(true);
-          console.error("Failed to fetch product:", json.message);
+    const accessToken = Cookies.get("access_token");
+    if (accessToken) {
+      setToken(accessToken)
+      const fetchData = async () => {
+        try {
+          const headers = new Headers();
+          headers.append("Content-Type", "application/json");
+          headers.append("Authorization", `Bearer ${accessToken}`);
+          const response = await fetch(
+            `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/${store}/${storeId}/${id}`,
+            {
+              method: "GET",
+              headers: headers,
+            }, // Perbaiki URL untuk mengambil detail produk berdasarkan ID
+          );
+          const json = await response.json();
+          if (json.status_code === 200) {
+            setProduct(json.result); // Jika berhasil, atur state untuk menyimpan detail produk
+            setStock(json.result.stock); // Jika berhasil, atur state untuk menyimpan validasi stock
+          } else {
+            setNotFound(true);
+            console.error("Failed to fetch product:", json.message);
+          }
+        } catch (error) {
+          console.error("Error fetching product:", error);
         }
-      } catch (error) {
-        console.error("Error fetching product:", error);
-      }
-    };
-
-    fetchData(); // Panggil fungsi untuk mengambil data produk saat komponen dimuat
-  }, [id]);
+      };
+      fetchData(); 
+    }// Panggil fungsi untuk mengambil data produk saat komponen dimuat
+  }, [store, id, storeId]);
 
   const apiAddCart = async (username, amount, product_id) => {
     const headers = new Headers();
@@ -227,7 +226,7 @@ const DetailSection = ({ custom }) => {
 
       {/* More Info */}
       <div>
-        <MoreInfoProduct></MoreInfoProduct>
+        <MoreInfoProduct description={product.description}></MoreInfoProduct>
       </div>
       <ToastContainer></ToastContainer>
     </section>
