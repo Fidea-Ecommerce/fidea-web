@@ -33,7 +33,6 @@ const ProductPage = () => {
           },
         );
         const json = await response.json();
-        console.log(json.result);
         if (json.status_code === 200) {
           setList(json.result);
         }
@@ -72,7 +71,7 @@ const ProductPage = () => {
         <div className="grid grid-cols-2 gap-y-5 px-5 py-8 pb-28 pt-28 sm:grid-cols-3 md:grid-cols-5 md:pt-[170px] lg:grid-cols-4  lg:gap-y-20  ">
           {/* Looping dari API nya  */}
           {list.map((product) => (
-            <div key={product.id} className="flex justify-center">
+            <div key={product.product_id} className="flex justify-center">
               <Card product={product} />
             </div>
           ))}

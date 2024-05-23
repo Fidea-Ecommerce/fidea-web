@@ -40,7 +40,6 @@ const LoginPage = () => {
       });
 
       const resp = await response.json();
-      console.log(resp);
       if (resp["status_code"] === 200) {
         return { status: true, result: resp.result };
       } else {

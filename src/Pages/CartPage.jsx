@@ -19,6 +19,7 @@ const CartPage = () => {
       const decodedToken = jwtDecode(accessToken);
       setToken(accessToken);
       setUser(decodedToken);
+      console.log(accessToken)
     }
   }, []);
 
