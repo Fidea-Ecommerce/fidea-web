@@ -35,13 +35,25 @@ const DetailSection = ({ custom }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+
+        // Hanya menambahkan header Authorization jika token ada
+        if (token) {
+          headers.append("Authorization", `Bearer ${token}`);
+        }
+
         const response = await fetch(
-          `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/nexblu/${id}`, // Perbaiki URL untuk mengambil detail produk berdasarkan ID
+          `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/nexblu store/1/${id}`,
+          {
+            method: "GET",
+            headers: headers,
+          },
         );
         const json = await response.json();
         if (json.status_code === 200) {
-          setProduct(json.result); // Jika berhasil, atur state untuk menyimpan detail produk
-          setStock(json.result.stock); // Jika berhasil, atur state untuk menyimpan validasi stock
+          setProduct(json.result);
+          setStock(json.result.stock);
         } else {
           setNotFound(true);
           console.error("Failed to fetch product:", json.message);
@@ -51,8 +63,10 @@ const DetailSection = ({ custom }) => {
       }
     };
 
-    fetchData(); // Panggil fungsi untuk mengambil data produk saat komponen dimuat
-  }, [id]);
+    if (token) {
+      fetchData();
+    }
+  }, [id, token]);
 
   const apiAddCart = async (username, amount, product_id) => {
     const headers = new Headers();
