@@ -5,52 +5,64 @@ import { useState, useEffect } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Cookies from "js-cookie";
-import { jwtDecode } from 'jwt-decode';
-
-// !untuk sementara menggunakan data dummy json
-// import productsData from "../ContohDataProduk.json";
 
 const ProductSection = () => {
   const [list, setList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const [user, setUser] = useState({})
+  const [onLogin, setOnLogin] = useState(false);
+  const [token, setToken] = useState("");
 
   useEffect(() => {
-    const accessToken = Cookies.get('access_token');
+    const accessToken = Cookies.get("access_token");
     if (accessToken) {
-      const decodedToken = jwtDecode(accessToken);
-      setUser(decodedToken)
+      setToken(accessToken);
+      setOnLogin(true);
+    } else {
+      setIsLoading(false);
     }
-  }, [setUser]);
+  }, []);
 
   useEffect(() => {
-    const getProduct = async (username) => {
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
-      const response = await fetch(
-        `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/${username}`,
-        {
-          method: "GET",
-          headers: headers,
-        },
-      );
-      const json = await response.json();
-      if (json.status_code === 200) {
-        setList(json.result);
+    const getProduct = async (username, token) => {
+      try {
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        headers.append("Authorization", `Bearer ${token}`);
+        const response = await fetch(
+          `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/${username}/1`,
+          {
+            method: "GET",
+            headers: headers,
+          },
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const json = await response.json();
+        console.log(json.result);
+        if (json.status_code === 200) {
+          setList(json.result);
+        } else {
+          console.error("Error in JSON response:", json);
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
-    getProduct("nexblu");
-  }, []);
+
+    if (onLogin && token) {
+      getProduct("nexblu store", token);
+    }
+  }, [onLogin, token]);
 
   var settings = {
     dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: 3, // Ubah sesuai dengan jumlah item yang ingin ditampilkan dalam satu slide
+    slidesToShow: 3,
     slidesToScroll: 4,
-
     responsive: [
       {
         breakpoint: 1024,
@@ -89,7 +101,7 @@ const ProductSection = () => {
           <div className="w-[90%]">
             {isLoading ? (
               <div className="flex h-72 items-center justify-center">
-                <p className="text-center text-lg  font-semibold">Loading...</p>
+                <p className="text-center text-lg font-semibold">Loading...</p>
               </div>
             ) : (
               <Slider
