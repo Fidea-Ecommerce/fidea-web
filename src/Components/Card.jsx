@@ -54,7 +54,7 @@ const Card = (props) => {
     const data = {
       username: username,
       amount: 1, // * default 1 untuk keranjang pada tombol di card component
-      product_id: parseInt(product.id), // ! UBAH KE INTEGER UNTUK KIRIM
+      product_id: parseInt(product.product_id), // ! UBAH KE INTEGER UNTUK KIRIM
       seller: "nexblu",
     };
     const response = await fetch(
@@ -75,7 +75,7 @@ const Card = (props) => {
 
   // function menambahkan ke cart
   const addToCart = () => {
-    const result = apiAddCart(user.username, 1, product.id);
+    const result = apiAddCart(user.username, 1, product.product_id);
     if (result) {
       toast.success("Berhasil dimasukkan ke keranjang!");
     }
@@ -88,7 +88,7 @@ const Card = (props) => {
   return (
     <div className="border-slate relative flex w-36 flex-col justify-between overflow-hidden rounded-xl lg:h-[500px] lg:w-72 lg:rounded-3xl ">
       <Link
-        to={`/products/detail/${product.id}`}
+        to={`/products/detail/${product.product_id}`}
         className="relative flex h-full w-36 flex-col justify-between rounded-2xl border border-slate-300 bg-white p-2 drop-shadow-sm lg:w-72 lg:rounded-3xl lg:p-5"
       >
         <img
