@@ -36,7 +36,7 @@ const SearchBar = ({ custom }) => {
     <>
       <form
         onSubmit={handleSearch} // Ganti onClick menjadi onSubmit
-        className={`  flex h-2 w-fit items-center rounded-2xl border border-black bg-white p-3 text-sm sm:h-12 sm:p-5 lg:rounded-3xl lg:text-base ${custom}`}
+        className={`  flex h-3 w-fit items-center rounded-2xl border border-black bg-white p-4 text-sm sm:h-12 sm:p-5 lg:rounded-3xl lg:text-base ${custom}`}
       >
         <button type="submit" className="pr-2 text-slate-500 sm:pr-4">
           {" "}

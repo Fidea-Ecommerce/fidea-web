@@ -1,7 +1,6 @@
 import { MdPerson } from "react-icons/md";
 import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import { IoIosHome } from "react-icons/io";
 import { IoCall } from "react-icons/io5";
 import { FaBoxesPacking } from "react-icons/fa6";
@@ -10,19 +9,21 @@ import { Button, Drawer, Popover } from "@mui/material";
 import { GiHamburgerMenu } from "react-icons/gi";
 import WebLogo from "./WebLogo";
 import SearchBar from "./SearchBar";
+import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useStateHistory } from "@mantine/hooks";
 
 const Navbar = (props) => {
   const history = useStateHistory();
   const [user, setUser] = useState();
-  const { text = "text-white", custom } = props;
   const [onLogin, setOnLogin] = useState(false);
+  const { text = "text-white", custom } = props;
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null); // State untuk ancor Popover
 
   useEffect(() => {
     const accessToken = Cookies.get("access_token");
+    console.log(accessToken);
     if (accessToken) {
       //  * jika user login maka akan ditampilkan profile di navbar jika tidak maka akan menampilkan tombol login
       setOnLogin(true);
@@ -70,6 +71,9 @@ const Navbar = (props) => {
     >
       <ul className={`${text} flex w-56  flex-col gap-5  px-5  font-semibold`}>
         <div className="border-b-2 border-slate-500 py-5">
+          <li className="mb-5 flex justify-center p-0">
+            <WebLogo custom="block sm:hidden font:thin"></WebLogo>
+          </li>
           <li className="flex items-center justify-center">
             {onLogin ? (
               ""
@@ -126,9 +130,10 @@ const Navbar = (props) => {
   // *untuk menyimpan list yang akan ditampilkan component drawer saat responsive
 
   return (
-    <div className={`flex h-fit w-full items-center justify-between ${custom}`}>
-      <WebLogo custom={" text-xs  sm:text-xl"}></WebLogo>
-
+    <div
+      className={`flex h-fit w-screen items-center justify-around lg:justify-between ${custom}`}
+    >
+      <WebLogo custom={" hidden sm:block text-xs  sm:text-xl"}></WebLogo>
       <SearchBar></SearchBar>
 
       {/* * untuk desktop,saat responsive navbar desktopp akan dihidden */}

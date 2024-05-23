@@ -1,12 +1,9 @@
-import Navbar from "../Components/Navbar";
-
 const LandingPage = () => {
   return (
-    <div className=" h-[50dvh] w-screen bg-[url('assets/LandingPageBG.webp')] bg-cover md:h-screen">
-      <Navbar custom="text-black p-5 sm:p-14 sm:py-10"></Navbar>
-      <div className=" mt-5 flex w-full justify-center lg:mt-16 ">
-        <div className="flex w-fit flex-col items-center justify-center sm:items-start ">
-          <h1 className=" font-reguler  font-['Poller_One'] text-4xl leading-tight text-greenprime md:text-[70px]">
+    <div className=" h-screen w-screen bg-[url('assets/LandingPageBG.webp')] bg-cover md:h-screen">
+      <div className="flex h-screen w-full justify-center   ">
+        <div className="flex h-screen w-fit flex-col items-center justify-center sm:items-start  ">
+          <h1 className=" font-reguler text-center font-['Poller_One']  text-5xl leading-tight text-greenprime md:text-start md:text-[70px]">
             MINIMALIST <br />
             FURNITURE
           </h1>

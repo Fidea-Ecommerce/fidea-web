@@ -86,8 +86,6 @@ const CartPage = () => {
       toast.error("Checkout failed");
     }
   };
-  console.log(token);
-  console.log(user);
 
   return (
     <div className="h-full min-h-screen bg-[#EBEBEB] pb-28 pt-28">
