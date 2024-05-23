@@ -35,6 +35,10 @@ const useAuth = () => {
         setAuth(false);
       } else {
         const isValid = await verifyToken(accessToken, refreshToken);
+        if (!isValid) {
+          Cookies.remove('access_token');
+          Cookies.remove('refresh_token');
+        }
         setAuth(isValid);
       }
     };
