@@ -3,9 +3,10 @@ import { FaCartPlus, FaHeart, FaRegHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import "react-toastify/dist/ReactToastify.css";
+import { list } from "postcss";
 
 const Card = (props) => {
-  const { product, list, setList } = props;
+  const { product, setList, listProductPage, setListProductPage } = props;
 
   const [token, setToken] = useState("");
 
@@ -69,6 +70,13 @@ const Card = (props) => {
       const result = await apiAddFavorite()
       if (result) {
         alert("Ditambahkan ke favorit!");
+        setListProductPage(
+          listProductPage.map((data) =>
+            data.product_id === product.product_id
+              ? { ...data, is_favorite: true }
+              : data
+          )
+        );
         setList(
           list.map((data) =>
             data.product_id === product.product_id
@@ -81,6 +89,13 @@ const Card = (props) => {
       const result = await apiRemoveFavorite()
       if (result) {
         alert("Dihapus dari favorit!");
+        setListProductPage(
+          listProductPage.map((data) =>
+            data.product_id === product.product_id
+              ? { ...data, is_favorite: false }
+              : data
+          )
+        );
         setList(
           list.map((data) =>
             data.product_id === product.product_id

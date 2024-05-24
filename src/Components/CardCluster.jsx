@@ -41,7 +41,7 @@ const CardCluster = () => {
     <div className="grid grid-cols-2 gap-y-5 px-5 py-8 md:grid-cols-4 lg:grid-cols-4 lg:gap-y-20 ">
       {list.map((product) => (
         <div key={product.product_id} className="flex justify-center">
-          <Card product={product} />
+          <Card product={product} setList={setList} />
         </div>
       ))}
     </div>
