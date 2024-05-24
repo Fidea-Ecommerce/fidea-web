@@ -2,60 +2,118 @@ import { useEffect, useState } from "react";
 import { FaCartPlus, FaHeart, FaRegHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { list } from "postcss";
 
 const Card = (props) => {
-  const { product } = props;
-  // membuat fungsi untuk menambahkan ke keranjang dan wishlist
+  const { product, setList, listProductPage, setListProductPage } = props;
 
-  const [isInWishlist, setOnWishlist] = useState(false);
-
-  // const successWishlist = () => {
-  //   toast.success("DItambahkan ke favorit!", {
-  //     position: "top-center",
-  //   });
-  // };
-
-  // const removeWishlist = () => {
-  //   toast.success("Dihapus dari favorit!", {
-  //     position: "top-center",
-  //   });
-  // };
-
-  const wishlistToggle = () => {
-    setOnWishlist(!isInWishlist);
-    if (!isInWishlist) {
-      alert("Ditambahkan ke favorit!");
-      // successWishlist();
-    } else {
-      // removeWishlist();
-      alert("Dihapus dari favorit!");
-    }
-  };
-
-  const [user, setUser] = useState({});
   const [token, setToken] = useState("");
 
   useEffect(() => {
     const accessToken = Cookies.get("access_token");
     if (accessToken) {
-      const decodedToken = jwtDecode(accessToken);
       setToken(accessToken);
-      setUser(decodedToken);
     }
   }, []);
 
-  const apiAddCart = async (username) => {
+  const apiAddFavorite = async () => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${token}`);
     const data = {
-      username: username,
+      seller_id: product.store_id,
+      product_id: product.product_id,
+    };
+    const response = await fetch(
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(data),
+      },
+    );
+    const resp = await response.json();
+    if (resp.status_code === 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const apiRemoveFavorite = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+    const data = {
+      seller_id: product.store_id,
+      product_id: product.product_id,
+    };
+    const response = await fetch(
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      {
+        method: "DELETE",
+        headers: headers,
+        body: JSON.stringify(data),
+      },
+    );
+    const resp = await response.json();
+    if (resp.status_code === 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const handleFavorite = async () => {
+    if (product.is_favorite == false) {
+      const result = await apiAddFavorite()
+      if (result) {
+        alert("Ditambahkan ke favorit!");
+        setListProductPage(
+          listProductPage.map((data) =>
+            data.product_id === product.product_id
+              ? { ...data, is_favorite: true }
+              : data
+          )
+        );
+        setList(
+          list.map((data) =>
+            data.product_id === product.product_id
+              ? { ...data, is_favorite: true }
+              : data
+          )
+        );
+      }
+    } else {
+      const result = await apiRemoveFavorite()
+      if (result) {
+        alert("Dihapus dari favorit!");
+        setListProductPage(
+          listProductPage.map((data) =>
+            data.product_id === product.product_id
+              ? { ...data, is_favorite: false }
+              : data
+          )
+        );
+        setList(
+          list.map((data) =>
+            data.product_id === product.product_id
+              ? { ...data, is_favorite: false }
+              : data
+          )
+        );
+      }
+    }
+  };
+
+  const apiAddCart = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+    const data = {
       amount: 1, // * default 1 untuk keranjang pada tombol di card component
-      product_id: parseInt(product.id), // ! UBAH KE INTEGER UNTUK KIRIM
-      seller: "nexblu",
+      product_id: product.product_id,
     };
     const response = await fetch(
       "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/cart",
@@ -75,12 +133,12 @@ const Card = (props) => {
 
   // function menambahkan ke cart
   const addToCart = () => {
-    const result = apiAddCart(user.username, 1, product.id);
+    const result = apiAddCart();
     if (result) {
-      toast.success("Berhasil dimasukkan ke keranjang!");
+      alert("Ditambahkan ke cart!");
     }
     if (result === false) {
-      toast.error("Gagal dimasukkan ke keranjang!");
+      alert("gagal di tambahkan ke cart!");
     }
     // toast.success("Berhasil dimasukkan ke keranjang!");
   };
@@ -88,7 +146,11 @@ const Card = (props) => {
   return (
     <div className="border-slate relative flex w-36 flex-col justify-between overflow-hidden rounded-xl lg:h-[500px] lg:w-72 lg:rounded-3xl ">
       <Link
+<<<<<<< HEAD
         to={`/products/detail/${product.product_id}`}
+=======
+        to={`/products/detail/${product.store}/${product.store_id}/${product.title}`}
+>>>>>>> 6cd30306d1bf2e5f7563c3ea13479c8aedca96b7
         className="relative flex h-full w-36 flex-col justify-between rounded-2xl border border-slate-300 bg-white p-2 drop-shadow-sm lg:w-72 lg:rounded-3xl lg:p-5"
       >
         <img
@@ -118,12 +180,11 @@ const Card = (props) => {
         <FaCartPlus color="white" />
       </button>
       <button
-        onClick={wishlistToggle}
+        onClick={handleFavorite}
         className="absolute right-1 top-1 h-fit w-fit rounded-bl-xl rounded-tr-xl bg-white p-2 text-xl lg:right-5 lg:top-5 lg:rounded-bl-3xl lg:p-3  lg:text-3xl"
       >
-        {isInWishlist ? <FaHeart color="red" /> : <FaRegHeart />}
+        {product.is_favorite ? <FaHeart color="red" /> : <FaRegHeart />}
       </button>
-      <ToastContainer />
     </div>
   );
 };

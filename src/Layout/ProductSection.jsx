@@ -9,53 +9,47 @@ import Cookies from "js-cookie";
 const ProductSection = () => {
   const [list, setList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [onLogin, setOnLogin] = useState(false);
-  const [token, setToken] = useState("");
 
   useEffect(() => {
     const accessToken = Cookies.get("access_token");
     if (accessToken) {
-      setToken(accessToken);
-      setOnLogin(true);
+      const getProduct = async (username) => {
+        try {
+          const headers = new Headers();
+          headers.append("Content-Type", "application/json");
+          headers.append("Authorization", `Bearer ${accessToken}`);
+          const response = await fetch(
+            `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/${username}/1`,
+            {
+              method: "GET",
+              headers: headers,
+            },
+          );
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const json = await response.json();
+          console.log(json.result);
+          if (json.status_code === 200) {
+            setList(json.result);
+            setIsLoading(false);
+          } else {
+            setIsLoading(false);
+            // 
+          }
+        } catch (error) {
+          setIsLoading(false);
+          // 
+        } finally {
+          setIsLoading(false);
+          // 
+        }
+      };
+      getProduct("nexblu store");
     } else {
       setIsLoading(false);
     }
   }, []);
-
-  useEffect(() => {
-    const getProduct = async (username, token) => {
-      try {
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        headers.append("Authorization", `Bearer ${token}`);
-        const response = await fetch(
-          `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/${username}/1`,
-          {
-            method: "GET",
-            headers: headers,
-          },
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const json = await response.json();
-        console.log(json.result);
-        if (json.status_code === 200) {
-          setList(json.result);
-        } else {
-          console.error("Error in JSON response:", json);
-        }
-      } catch (error) {
-        console.error("Fetch error:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (onLogin && token) {
-      getProduct("nexblu store", token);
-    }
-  }, [onLogin, token]);
 
   var settings = {
     dots: false,
@@ -109,7 +103,7 @@ const ProductSection = () => {
                 className="ml-5 flex items-center justify-center lg:pl-20"
               >
                 {list.map((product) => (
-                  <div key={product.id} className="flex justify-center">
+                  <div key={product.product_id} className="flex justify-center">
                     <Card product={product} />
                   </div>
                 ))}

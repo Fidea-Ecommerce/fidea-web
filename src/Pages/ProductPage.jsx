@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
 const ProductPage = () => {
-  const [list, setList] = useState([]);
+  const [listProductPage, setListProductPage] = useState([]);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [onLogin, setOnLogin] = useState(false);
   const [token, setToken] = useState("");
@@ -33,9 +33,8 @@ const ProductPage = () => {
           },
         );
         const json = await response.json();
-        console.log(json.result);
         if (json.status_code === 200) {
-          setList(json.result);
+          setListProductPage(json.result);
         }
       };
       const accessToken = Cookies.get("access_token");
@@ -71,9 +70,9 @@ const ProductPage = () => {
       {onLogin ? (
         <div className="grid grid-cols-2 gap-y-5 px-5 py-8 pb-28 pt-28 sm:grid-cols-3 md:grid-cols-5 md:pt-[170px] lg:grid-cols-4  lg:gap-y-20  ">
           {/* Looping dari API nya  */}
-          {list.map((product) => (
-            <div key={product.id} className="flex justify-center">
-              <Card product={product} />
+          {listProductPage.map((product) => (
+            <div key={product.product_id} className="flex justify-center">
+              <Card product={product} listProductPage={listProductPage} setListProductPage={setListProductPage} />
             </div>
           ))}
         </div>
