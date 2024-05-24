@@ -72,7 +72,7 @@ const ProductPage = () => {
           {/* Looping dari API nya  */}
           {list.map((product) => (
             <div key={product.product_id} className="flex justify-center">
-              <Card product={product} />
+              <Card product={product} list={list} setList={setList} />
             </div>
           ))}
         </div>

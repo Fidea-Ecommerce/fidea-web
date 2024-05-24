@@ -41,6 +41,7 @@ const DetailSection = ({ custom }) => {
           if (json.status_code === 200) {
             setProduct(json.result); // Jika berhasil, atur state untuk menyimpan detail produk
             setStock(json.result.stock); // Jika berhasil, atur state untuk menyimpan validasi stock
+            setAmount(json.result.amount !== null ? json.result.amount : 0)
           } else {
             setNotFound(true);
             console.error("Failed to fetch product:", json.message);
