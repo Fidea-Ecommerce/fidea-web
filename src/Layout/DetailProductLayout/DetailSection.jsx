@@ -7,7 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
-const DetailSection = ({ custom }) => {
+const DetailSection = ({ custom, setTitle }) => {
   // mengambil ID dari routing lalu dicari ID  API card  menggunakan params, lalu merendernya
   const [isActive, setIsActive] = useState(false);
   let { store, storeId, id } = useParams(); // Terima ID produk dari URL
@@ -41,6 +41,7 @@ const DetailSection = ({ custom }) => {
           if (json.status_code === 200) {
             setProduct(json.result); // Jika berhasil, atur state untuk menyimpan detail produk
             setStock(json.result.stock); // Jika berhasil, atur state untuk menyimpan validasi stock
+            setTitle(json.result.title)
           } else {
             setNotFound(true);
             console.error("Failed to fetch product:", json.message);
