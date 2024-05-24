@@ -7,10 +7,10 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
-const DetailSection = ({ custom, setTitle }) => {
+const DetailSection = ({ custom }) => {
   // mengambil ID dari routing lalu dicari ID  API card  menggunakan params, lalu merendernya
   const [isActive, setIsActive] = useState(false);
-  let { store, storeId, id } = useParams(); // Terima ID produk dari URL
+  let { store, storeId, title } = useParams(); // Terima ID produk dari URL
   const [product, setProduct] = useState();
   const [notFound, setNotFound] = useState(false);
   const [isInWishlist, setOnWishlist] = useState(false);
@@ -31,7 +31,7 @@ const DetailSection = ({ custom, setTitle }) => {
           headers.append("Content-Type", "application/json");
           headers.append("Authorization", `Bearer ${accessToken}`);
           const response = await fetch(
-            `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/${store}/${storeId}/${id}`,
+            `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/title/${store}/${storeId}/${title}`,
             {
               method: "GET",
               headers: headers,
@@ -41,7 +41,6 @@ const DetailSection = ({ custom, setTitle }) => {
           if (json.status_code === 200) {
             setProduct(json.result); // Jika berhasil, atur state untuk menyimpan detail produk
             setStock(json.result.stock); // Jika berhasil, atur state untuk menyimpan validasi stock
-            setTitle(json.result.title)
           } else {
             setNotFound(true);
             console.error("Failed to fetch product:", json.message);
@@ -52,7 +51,7 @@ const DetailSection = ({ custom, setTitle }) => {
       };
       fetchData(); 
     }// Panggil fungsi untuk mengambil data produk saat komponen dimuat
-  }, [store, id, storeId]);
+  }, [store, storeId, title]);
 
   const apiAddCart = async (username, amount, product_id) => {
     const headers = new Headers();

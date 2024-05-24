@@ -4,11 +4,11 @@ import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 
 // require API
-const CardCluster = ({ title }) => {
+const CardCluster = () => {
   // CONTOH API NYA bisa diganti sewaktu waktu atau tambah props supaya bisa di custom di page lain
 
   const [list, setList] = useState([]);
-  let { store, storeId, id } = useParams();
+  let { store, storeId, title } = useParams();
 
   useEffect(() => {
     const accessToken = Cookies.get("access_token");

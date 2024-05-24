@@ -59,8 +59,6 @@ const PrivateRoute = () => {
 };
 
 const App = () => {
-  const [title, setTitle] = useState('')
-
   const auth = useAuth();
 
   if (auth === null) {
@@ -75,7 +73,7 @@ const App = () => {
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductPage />} />
-          <Route path="/products/detail/:store/:storeId/:id" element={<ProductDetail title={title} setTitle={setTitle} />} />
+          <Route path="/products/detail/:store/:storeId/:title" element={<ProductDetail />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/resetpassword" element={<ResetPassword1 />} />
           <Route path="/products/result/:productName" element={<SearchResult />} />
