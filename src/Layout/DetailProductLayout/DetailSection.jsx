@@ -3,7 +3,6 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import MoreInfoProduct from "./MoreInfoProduct";
 import { Navigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
@@ -11,9 +10,8 @@ const DetailSection = ({ custom }) => {
   // mengambil ID dari routing lalu dicari ID  API card  menggunakan params, lalu merendernya
   const [isActive, setIsActive] = useState(false);
   let { store, storeId, title } = useParams(); // Terima ID produk dari URL
-  const [product, setProduct] = useState();
+  const [product, setProduct] = useState({});
   const [notFound, setNotFound] = useState(false);
-  const [isInWishlist, setOnWishlist] = useState(false);
 
   const [amount, setAmount] = useState(0); // state amount wishlist
   const [stock, setStock] = useState(0); // state stock product
@@ -41,7 +39,6 @@ const DetailSection = ({ custom }) => {
           if (json.status_code === 200) {
             setProduct(json.result); // Jika berhasil, atur state untuk menyimpan detail produk
             setStock(json.result.stock); // Jika berhasil, atur state untuk menyimpan validasi stock
-            setAmount(json.result.amount !== null ? json.result.amount : 0)
           } else {
             setNotFound(true);
             console.error("Failed to fetch product:", json.message);
@@ -54,15 +51,13 @@ const DetailSection = ({ custom }) => {
     }// Panggil fungsi untuk mengambil data produk saat komponen dimuat
   }, [store, storeId, title]);
 
-  const apiAddCart = async (username, amount, product_id) => {
+  const apiAddCart = async () => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${token}`);
     const data = {
-      username: username,
-      amount: amount,
-      product_id: parseInt(product_id), // ! UBAH KE INTEGER UNTUK KIRIM
-      seller: "nexblu",
+      amount: amount, // * default 1 untuk keranjang pada tombol di card component
+      product_id: product.product_id,
     };
     const response = await fetch(
       "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/cart",
@@ -97,34 +92,96 @@ const DetailSection = ({ custom }) => {
 
   // function untuk button wishlist dan cart yang dimana nanti akan dimasukkan ke database
 
-  const wishlistToggle = () => {
-    setOnWishlist(!isInWishlist);
-    if (!isInWishlist) {
-      alert("Ditambahkan ke keranjangmu!");
+  const apiAddFavorite = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+    const data = {
+      seller_id: product.store_id,
+      product_id: product.product_id,
+    };
+    const response = await fetch(
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(data),
+      },
+    );
+    const resp = await response.json();
+    if (resp.status_code === 201) {
+      return true;
     } else {
-      alert("dihapus ke wishlistmu!");
+      return false;
+    }
+  }
+
+  const apiRemoveFavorite = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+    const data = {
+      seller_id: product.store_id,
+      product_id: product.product_id,
+    };
+    const response = await fetch(
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      {
+        method: "DELETE",
+        headers: headers,
+        body: JSON.stringify(data),
+      },
+    );
+    const resp = await response.json();
+    if (resp.status_code === 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const handleFavorite = async () => {
+    if (product.is_favorite == false) {
+      const result = await apiAddFavorite()
+      if (result) {
+        alert("Ditambahkan ke favorit!");
+        setProduct((prevProduct) => ({
+          ...prevProduct,
+          is_favorite: true,
+        }));
+      }
+    } else {
+      const result = await apiRemoveFavorite()
+      if (result) {
+        alert("Dihapus dari favorit!");
+        setProduct((prevProduct) => ({
+          ...prevProduct,
+          is_favorite: false,
+        }));
+      }
     }
   };
 
   // handler button add amount cart
   const addProduct = async () => {
     if (amount < stock) {
-      setAmount(parseInt(amount) + 1);
+      setAmount(amount + 1);
     }
   };
 
   // handler button min amount cart
   const minProduct = async () => {
     if (amount > 0) {
-      setAmount(parseInt(amount) - 1);
+      setAmount(amount - 1);
     }
   };
 
   // function menambahkan ke cart
   const handleAddToCart = async () => {
-    const result = await apiAddCart(user.username, amount, id);
+    const result = await apiAddCart();
     if (result) {
-      toast.success("Added to cart");
+      alert("Ditambahkan ke cart!");
+      setAmount(0)
     }
   };
 
@@ -151,7 +208,7 @@ const DetailSection = ({ custom }) => {
             <h1 className="mb-5 mt-10 flex items-start gap-1 font-semibold">
               <span className="font-sm h-full items-start">Rp</span>{" "}
               <span className="text-3xl">
-                {product.price.toLocaleString("id-ID")}
+                {product.price}
               </span>
             </h1>
           </div>
@@ -212,10 +269,10 @@ const DetailSection = ({ custom }) => {
               Tambah ke Keranjang
             </button>
             <button
-              onClick={wishlistToggle}
+              onClick={handleFavorite}
               className="h-fit rounded-full border border-black p-4 "
             >
-              {isInWishlist ? (
+              {product.is_favorite ? (
                 <FaHeart size={30} color="red" />
               ) : (
                 <FaRegHeart size={30} />
@@ -229,7 +286,6 @@ const DetailSection = ({ custom }) => {
       <div>
         <MoreInfoProduct description={product.description}></MoreInfoProduct>
       </div>
-      <ToastContainer></ToastContainer>
     </section>
   );
 };
