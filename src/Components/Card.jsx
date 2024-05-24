@@ -146,11 +146,8 @@ const Card = (props) => {
   return (
     <div className="border-slate relative flex w-36 flex-col justify-between overflow-hidden rounded-xl lg:h-[500px] lg:w-72 lg:rounded-3xl ">
       <Link
-<<<<<<< HEAD
-        to={`/products/detail/${product.product_id}`}
-=======
+
         to={`/products/detail/${product.store}/${product.store_id}/${product.title}`}
->>>>>>> 6cd30306d1bf2e5f7563c3ea13479c8aedca96b7
         className="relative flex h-full w-36 flex-col justify-between rounded-2xl border border-slate-300 bg-white p-2 drop-shadow-sm lg:w-72 lg:rounded-3xl lg:p-5"
       >
         <img

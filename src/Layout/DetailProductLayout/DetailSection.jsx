@@ -5,7 +5,6 @@ import { Navigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import "react-toastify/dist/ReactToastify.css";
 
-
 const DetailSection = ({ custom }) => {
   // mengambil ID dari routing lalu dicari ID  API card  menggunakan params, lalu merendernya
   const [isActive, setIsActive] = useState(false);
@@ -16,39 +15,13 @@ const DetailSection = ({ custom }) => {
   const [amount, setAmount] = useState(0); // state amount wishlist
   const [stock, setStock] = useState(0); // state stock product
 
-  const [token, setToken] = useState('')
+  const [token, setToken] = useState("");
 
   // mengambil data dari ecommerce-api
   useEffect(() => {
-<<<<<<< HEAD
-    const fetchData = async () => {
-      try {
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
-
-        // Hanya menambahkan header Authorization jika token ada
-        if (token) {
-          headers.append("Authorization", `Bearer ${token}`);
-        }
-
-        const response = await fetch(
-          `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/nexblu store/1/${id}`,
-          {
-            method: "GET",
-            headers: headers,
-          },
-        );
-        const json = await response.json();
-        if (json.status_code === 200) {
-          setProduct(json.result);
-          setStock(json.result.stock);
-        } else {
-          setNotFound(true);
-          console.error("Failed to fetch product:", json.message);
-=======
     const accessToken = Cookies.get("access_token");
     if (accessToken) {
-      setToken(accessToken)
+      setToken(accessToken);
       const fetchData = async () => {
         try {
           const headers = new Headers();
@@ -71,23 +44,13 @@ const DetailSection = ({ custom }) => {
           }
         } catch (error) {
           console.error("Error fetching product:", error);
->>>>>>> 6cd30306d1bf2e5f7563c3ea13479c8aedca96b7
         }
       };
-      fetchData(); 
-    }// Panggil fungsi untuk mengambil data produk saat komponen dimuat
+      fetchData();
+    } // Panggil fungsi untuk mengambil data produk saat komponen dimuat
   }, [store, storeId, title]);
 
-<<<<<<< HEAD
-    if (token) {
-      fetchData();
-    }
-  }, [id, token]);
-
-  const apiAddCart = async (username, amount, product_id) => {
-=======
-  const apiAddCart = async () => {
->>>>>>> 6cd30306d1bf2e5f7563c3ea13479c8aedca96b7
+  const apiAddCart = async (username, amount) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${token}`);
@@ -150,7 +113,7 @@ const DetailSection = ({ custom }) => {
     } else {
       return false;
     }
-  }
+  };
 
   const apiRemoveFavorite = async () => {
     const headers = new Headers();
@@ -174,11 +137,11 @@ const DetailSection = ({ custom }) => {
     } else {
       return false;
     }
-  }
+  };
 
   const handleFavorite = async () => {
     if (product.is_favorite == false) {
-      const result = await apiAddFavorite()
+      const result = await apiAddFavorite();
       if (result) {
         alert("Ditambahkan ke favorit!");
         setProduct((prevProduct) => ({
@@ -187,7 +150,7 @@ const DetailSection = ({ custom }) => {
         }));
       }
     } else {
-      const result = await apiRemoveFavorite()
+      const result = await apiRemoveFavorite();
       if (result) {
         alert("Dihapus dari favorit!");
         setProduct((prevProduct) => ({
@@ -217,7 +180,7 @@ const DetailSection = ({ custom }) => {
     const result = await apiAddCart();
     if (result) {
       alert("Ditambahkan ke cart!");
-      setAmount(0)
+      setAmount(0);
     }
   };
 
@@ -243,9 +206,7 @@ const DetailSection = ({ custom }) => {
             <p className="text-sm text-slate-500">{product.description}</p>
             <h1 className="mb-5 mt-10 flex items-start gap-1 font-semibold">
               <span className="font-sm h-full items-start">Rp</span>{" "}
-              <span className="text-3xl">
-                {product.price}
-              </span>
+              <span className="text-3xl">{product.price}</span>
             </h1>
           </div>
           {/* variant */}
