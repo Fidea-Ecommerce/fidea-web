@@ -3,6 +3,10 @@ import HeaderPage from "../Layout/HeaderPage";
 import Card from "../Components/Card";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import fidea from '../assets/fidea1.png'
+
+
 const SearchResult = () => {
   const { productName } = useParams();
   const [showScrollButton, setShowScrollButton] = useState(false);
@@ -50,27 +54,34 @@ const SearchResult = () => {
   };
 
   return (
-    <section className="h-auto min-h-screen  w-full bg-[#EBEBEB] ">
-      <HeaderPage custom={" "}></HeaderPage>
-      <div className="grid grid-cols-2 gap-y-5 px-5 py-28 sm:grid-cols-3 md:grid-cols-5 md:pt-[170px] lg:grid-cols-4  lg:gap-y-20  ">
-        {/* Looping dari API nya  */}
-        {list.map((product) => (
-          <div key={product.id} className="flex justify-center">
-            <Card product={product} />
-          </div>
-        ))}
-      </div>
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Search Result</title>
+        <link rel="icon" type="image/svg+xml" href={fidea} />
+      </Helmet>
+      <section className="h-auto min-h-screen  w-full bg-[#EBEBEB] ">
+        <HeaderPage custom={" "}></HeaderPage>
+        <div className="grid grid-cols-2 gap-y-5 px-5 py-28 sm:grid-cols-3 md:grid-cols-5 md:pt-[170px] lg:grid-cols-4  lg:gap-y-20  ">
+          {/* Looping dari API nya  */}
+          {list.map((product) => (
+            <div key={product.id} className="flex justify-center">
+              <Card product={product} />
+            </div>
+          ))}
+        </div>
 
-      {/* Tombol Scroll To Top */}
-      {showScrollButton && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-10  right-10 h-fit w-fit  rounded-full  bg-greenprime p-5 text-white shadow-md transition duration-300 ease-in-out hover:bg-gray-600 xl:hidden"
-        >
-          <FaArrowUp color="white" size={30} />
-        </button>
-      )}
-    </section>
+        {/* Tombol Scroll To Top */}
+        {showScrollButton && (
+          <button
+            onClick={scrollToTop}
+            className="fixed bottom-10  right-10 h-fit w-fit  rounded-full  bg-greenprime p-5 text-white shadow-md transition duration-300 ease-in-out hover:bg-gray-600 xl:hidden"
+          >
+            <FaArrowUp color="white" size={30} />
+          </button>
+        )}
+      </section>
+    </>
   );
 };
 
