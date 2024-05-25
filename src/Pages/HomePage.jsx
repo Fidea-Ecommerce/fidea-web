@@ -2,7 +2,7 @@ import Navbar from "../Components/Navbar";
 import LandingPage from "../Layout/LandingPage";
 import ProductSection from "../Layout/ProductSection";
 import { Helmet } from "react-helmet";
-import fidea from '../assets/fidea.png'
+import fidea from '../assets/fidea1.png'
 
 const HomePage = () => {
   return (

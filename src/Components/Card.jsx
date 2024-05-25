@@ -66,6 +66,7 @@ const Card = (props) => {
   }
 
   const handleFavorite = async () => {
+    console.log('terklik')
     if (product.is_favorite == false) {
       const result = await apiAddFavorite()
       if (result) {
