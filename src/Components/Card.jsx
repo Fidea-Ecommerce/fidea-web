@@ -3,10 +3,9 @@ import { FaCartPlus, FaHeart, FaRegHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import "react-toastify/dist/ReactToastify.css";
-import { list } from "postcss";
 
 const Card = (props) => {
-  const { product, setList, listProductPage, setListProductPage } = props;
+  const { product, setList, listProductPage, setListProductPage, from, list } = props;
 
   const [token, setToken] = useState("");
 
@@ -66,44 +65,51 @@ const Card = (props) => {
   }
 
   const handleFavorite = async () => {
-    console.log('terklik')
     if (product.is_favorite == false) {
       const result = await apiAddFavorite()
       if (result) {
         alert("Ditambahkan ke favorit!");
-        setListProductPage(
-          listProductPage.map((data) =>
-            data.product_id === product.product_id
-              ? { ...data, is_favorite: true }
-              : data
-          )
-        );
-        setList(
-          list.map((data) =>
-            data.product_id === product.product_id
-              ? { ...data, is_favorite: true }
-              : data
-          )
-        );
+        if (from === 'CardCluster') {
+          setList(
+            list.map((data) =>
+              data.product_id === product.product_id
+                ? { ...data, is_favorite: true }
+                : data
+            )
+          );
+        }
+        if (from === 'ProductPage') {
+          setListProductPage(
+            listProductPage.map((data) =>
+              data.product_id === product.product_id
+                ? { ...data, is_favorite: true }
+                : data
+            )
+          );
+        }
       }
     } else {
       const result = await apiRemoveFavorite()
       if (result) {
         alert("Dihapus dari favorit!");
-        setListProductPage(
-          listProductPage.map((data) =>
-            data.product_id === product.product_id
-              ? { ...data, is_favorite: false }
-              : data
-          )
-        );
-        setList(
-          list.map((data) =>
-            data.product_id === product.product_id
-              ? { ...data, is_favorite: false }
-              : data
-          )
-        );
+        if (from === 'CardCluster') {
+          setList(
+            list.map((data) =>
+              data.product_id === product.product_id
+                ? { ...data, is_favorite: false }
+                : data
+            )
+          );
+        }
+        if (from === 'ProductPage') {
+          setListProductPage(
+            listProductPage.map((data) =>
+              data.product_id === product.product_id
+                ? { ...data, is_favorite: false }
+                : data
+            )
+          );
+        }
       }
     }
   };
