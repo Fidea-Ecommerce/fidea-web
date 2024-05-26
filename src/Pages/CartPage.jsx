@@ -38,9 +38,6 @@ const CartPage = () => {
       const json = await response.json();
       if (json["status_code"] === 200) {
         setPrice(json["result"]["total_price"]);
-        setProductCartProductList(json["result"]["products"] || []);
-      } else {
-        setProductCartProductList([]);
       }
     };
 
@@ -51,7 +48,8 @@ const CartPage = () => {
   }, []);
 
   useEffect(() => {
-    setAmountProduct(productCartProductList.length);
+    const nonZeroAmountProducts = productCartProductList.filter(product => product.amount > 0);
+    setAmountProduct(nonZeroAmountProducts.length);
   }, [productCartProductList]);
 
   const checkout = async (token, user) => {
