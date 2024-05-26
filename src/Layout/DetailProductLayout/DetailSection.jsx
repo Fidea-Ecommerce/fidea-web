@@ -3,66 +3,62 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import MoreInfoProduct from "./MoreInfoProduct";
 import { Navigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
+import { toast } from 'react-toastify';
 
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 const DetailSection = ({ custom }) => {
   // mengambil ID dari routing lalu dicari ID  API card  menggunakan params, lalu merendernya
   const [isActive, setIsActive] = useState(false);
-  const { id } = useParams(); // Terima ID produk dari URL
-  const [product, setProduct] = useState();
+  let { store, storeId, title } = useParams(); // Terima ID produk dari URL
+  const [product, setProduct] = useState({});
   const [notFound, setNotFound] = useState(false);
-  const [isInWishlist, setOnWishlist] = useState(false);
 
   const [amount, setAmount] = useState(0); // state amount wishlist
   const [stock, setStock] = useState(0); // state stock product
 
-  // state user
-  const [user, setUser] = useState({});
   const [token, setToken] = useState("");
 
-  useEffect(() => {
-    const accessToken = Cookies.get("access_token");
-    if (accessToken) {
-      const decodedToken = jwtDecode(accessToken);
-      setToken(accessToken);
-      setUser(decodedToken);
-    }
-  }, []);
+  const [loading, setLoading] = useState(false)
 
   // mengambil data dari ecommerce-api
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/nexblu/${id}`, // Perbaiki URL untuk mengambil detail produk berdasarkan ID
-        );
-        const json = await response.json();
-        if (json.status_code === 200) {
-          setProduct(json.result); // Jika berhasil, atur state untuk menyimpan detail produk
-          setStock(json.result.stock); // Jika berhasil, atur state untuk menyimpan validasi stock
-        } else {
-          setNotFound(true);
-          console.error("Failed to fetch product:", json.message);
+    const accessToken = Cookies.get("access_token");
+    if (accessToken) {
+      setToken(accessToken);
+      const fetchData = async () => {
+        try {
+          const headers = new Headers();
+          headers.append("Content-Type", "application/json");
+          headers.append("Authorization", `Bearer ${accessToken}`);
+          const response = await fetch(
+            `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/title/${store}/${storeId}/${title}`,
+            {
+              method: "GET",
+              headers: headers,
+            }, // Perbaiki URL untuk mengambil detail produk berdasarkan ID
+          );
+          const json = await response.json();
+          if (json.status_code === 200) {
+            setProduct(json.result); // Jika berhasil, atur state untuk menyimpan detail produk
+            setStock(json.result.stock); // Jika berhasil, atur state untuk menyimpan validasi stock
+          } else {
+            setNotFound(true);
+            console.error("Failed to fetch product:", json.message);
+          }
+        } catch (error) {
+          console.error("Error fetching product:", error);
         }
-      } catch (error) {
-        console.error("Error fetching product:", error);
-      }
-    };
+      };
+      fetchData();
+    } // Panggil fungsi untuk mengambil data produk saat komponen dimuat
+  }, [store, storeId, title]);
 
-    fetchData(); // Panggil fungsi untuk mengambil data produk saat komponen dimuat
-  }, [id]);
-
-  const apiAddCart = async (username, amount, product_id) => {
+  const apiAddCart = async () => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${token}`);
     const data = {
-      username: username,
-      amount: amount,
-      product_id: parseInt(product_id), // ! UBAH KE INTEGER UNTUK KIRIM
-      seller: "nexblu",
+      amount: amount, // * default 1 untuk keranjang pada tombol di card component
+      product_id: product.product_id,
     };
     const response = await fetch(
       "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/cart",
@@ -95,36 +91,148 @@ const DetailSection = ({ custom }) => {
     setIsActive(!isActive);
   };
 
+  const successAddFavoriteDetailSection = async () => {
+    toast.success("Success Add To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const failedAddFavoriteDetailSection = async () => {
+    toast.error("Failed Add To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const successRemoveFavoriteDetailSection = async () => {
+    toast.success("Success Remove To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const failedRemoveFavoriteDetailSection = async () => {
+    toast.error("Failed Remove To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const successAddCart = async () => {
+    toast.success("Success Add To Cart", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const failedAddCart = async () => {
+    toast.error("Failed Add To Cart", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
   // function untuk button wishlist dan cart yang dimana nanti akan dimasukkan ke database
 
-  const wishlistToggle = () => {
-    setOnWishlist(!isInWishlist);
-    if (!isInWishlist) {
-      alert("Ditambahkan ke keranjangmu!");
+  const apiAddFavorite = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+    const data = {
+      seller_id: product.store_id,
+      product_id: product.product_id,
+    };
+    const response = await fetch(
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(data),
+      },
+    );
+    const resp = await response.json();
+    if (resp.status_code === 201) {
+      return true;
     } else {
-      alert("dihapus ke wishlistmu!");
+      return false;
     }
+  };
+
+  const apiRemoveFavorite = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+    const data = {
+      seller_id: product.store_id,
+      product_id: product.product_id,
+    };
+    const response = await fetch(
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      {
+        method: "DELETE",
+        headers: headers,
+        body: JSON.stringify(data),
+      },
+    );
+    const resp = await response.json();
+    if (resp.status_code === 201) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const handleFavorite = async () => {
+    setLoading(true)
+    if (product.is_favorite == false) {
+      const result = await apiAddFavorite();
+      if (result) {
+        await successAddFavoriteDetailSection()
+        setProduct((prevProduct) => ({
+          ...prevProduct,
+          is_favorite: true,
+        }));
+      } else {
+        await failedAddFavoriteDetailSection()
+      }
+    } else {
+      const result = await apiRemoveFavorite();
+      if (result) {
+        await successRemoveFavoriteDetailSection()
+        setProduct((prevProduct) => ({
+          ...prevProduct,
+          is_favorite: false,
+        }));
+      } else {
+        await failedRemoveFavoriteDetailSection()
+      }
+    }
+    setLoading(false)
   };
 
   // handler button add amount cart
   const addProduct = async () => {
     if (amount < stock) {
-      setAmount(parseInt(amount) + 1);
+      setAmount(amount + 1);
     }
   };
 
   // handler button min amount cart
   const minProduct = async () => {
     if (amount > 0) {
-      setAmount(parseInt(amount) - 1);
+      setAmount(amount - 1);
     }
   };
 
   // function menambahkan ke cart
   const handleAddToCart = async () => {
-    const result = await apiAddCart(user.username, amount, id);
+    const result = await apiAddCart();
     if (result) {
-      toast.success("Added to cart");
+      await successAddCart()
+      setAmount(0)
+    } else {
+      await failedAddCart()
     }
   };
 
@@ -150,9 +258,7 @@ const DetailSection = ({ custom }) => {
             <p className="text-sm text-slate-500">{product.description}</p>
             <h1 className="mb-5 mt-10 flex items-start gap-1 font-semibold">
               <span className="font-sm h-full items-start">Rp</span>{" "}
-              <span className="text-3xl">
-                {product.price.toLocaleString("id-ID")}
-              </span>
+              <span className="text-3xl">{product.price}</span>
             </h1>
           </div>
           {/* variant */}
@@ -212,10 +318,10 @@ const DetailSection = ({ custom }) => {
               Tambah ke Keranjang
             </button>
             <button
-              onClick={wishlistToggle}
+              onClick={loading ? null : handleFavorite}
               className="h-fit rounded-full border border-black p-4 "
             >
-              {isInWishlist ? (
+              {product.is_favorite ? (
                 <FaHeart size={30} color="red" />
               ) : (
                 <FaRegHeart size={30} />
@@ -227,9 +333,8 @@ const DetailSection = ({ custom }) => {
 
       {/* More Info */}
       <div>
-        <MoreInfoProduct></MoreInfoProduct>
+        <MoreInfoProduct description={product.description}></MoreInfoProduct>
       </div>
-      <ToastContainer></ToastContainer>
     </section>
   );
 };

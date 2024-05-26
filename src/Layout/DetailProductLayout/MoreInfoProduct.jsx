@@ -1,9 +1,11 @@
 import ExpandInfo from "../../Components/ExpandInfo";
 
-const MoreInfoProduct = () => {
+const MoreInfoProduct = (prop) => {
+  let { description } = prop
+
   return (
     <div className="pb-10">
-      <ExpandInfo>Rincian Produk</ExpandInfo>
+      <ExpandInfo description={description}>Rincian Produk</ExpandInfo>
 
       <ExpandInfo>Ukuran</ExpandInfo>
 
