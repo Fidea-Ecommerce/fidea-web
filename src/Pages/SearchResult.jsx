@@ -3,13 +3,10 @@ import HeaderPage from "../Layout/HeaderPage";
 import Card from "../Components/Card";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-<<<<<<< HEAD
-import Cookies from "js-cookie";
-=======
-import { Helmet } from "react-helmet";
-import fidea from '../assets/fidea1.png'
 
->>>>>>> 860818ba80677b61938feb57a1a9bd1dd3487f9c
+import Cookies from "js-cookie";
+import { Helmet } from "react-helmet";
+import fidea from "../assets/fidea1.png";
 
 const SearchResult = () => {
   const { productName } = useParams();
@@ -76,27 +73,6 @@ const SearchResult = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <section className="h-auto min-h-screen w-full bg-[#EBEBEB]">
-      <HeaderPage custom={" "}></HeaderPage>
-      <div className="grid grid-cols-2 gap-y-5 px-5 py-28 sm:grid-cols-3 md:grid-cols-5 md:pt-[170px] lg:grid-cols-4 lg:gap-y-20">
-        {list.map((product) => (
-          <div key={product.id} className="flex justify-center">
-            <Card product={product} />
-          </div>
-        ))}
-      </div>
-
-      {showScrollButton && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-10 right-10 h-fit w-fit rounded-full bg-greenprime p-5 text-white shadow-md transition duration-300 ease-in-out hover:bg-gray-600 xl:hidden"
-        >
-          <FaArrowUp color="white" size={30} />
-        </button>
-      )}
-    </section>
-=======
     <>
       <Helmet>
         <meta charSet="utf-8" />
@@ -125,7 +101,6 @@ const SearchResult = () => {
         )}
       </section>
     </>
->>>>>>> 860818ba80677b61938feb57a1a9bd1dd3487f9c
   );
 };
 

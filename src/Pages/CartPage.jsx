@@ -6,7 +6,7 @@ import { jwtDecode } from "jwt-decode";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Helmet } from "react-helmet";
-import fidea from '../assets/fidea.png'
+import fidea from "../assets/fidea.png";
 
 const CartPage = () => {
   const [product, setProduct] = useState([]); // state list bill product
@@ -21,7 +21,7 @@ const CartPage = () => {
       const decodedToken = jwtDecode(accessToken);
       setToken(accessToken);
       setUser(decodedToken);
-      console.log(accessToken)
+      console.log(accessToken);
     }
   }, []);
 
