@@ -3,9 +3,7 @@ import CartProduct from "./CartProduct";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
-const CartProductList = () => {
-  const [products, setProducts] = useState([]); // State untuk menyimpan produk
-
+const CartProductList = ({ amountProduct, setAmountProduct, price, productCartProductList, setProductCartProductList, setPrice }) => {
   // State untuk data pengguna dan token
   const [user, setUser] = useState({});
   const [token, setToken] = useState("");
@@ -25,7 +23,7 @@ const CartProductList = () => {
       );
       const json = await response.json();
       if (json["status_code"] === 200) {
-        setProducts(json["result"]);
+        setProductCartProductList(json["result"]);
       }
     };
 
@@ -34,9 +32,9 @@ const CartProductList = () => {
       const decodedToken = jwtDecode(accessToken);
       setToken(accessToken);
       setUser(decodedToken);
-      getCart(accessToken, decodedToken.username);
+      getCart(accessToken);
     }
-  }, []);
+  }, [setProductCartProductList]);
 
   return (
     <div className=" flex w-auto flex-col justify-between gap-5 md:mx-10 lg:mx-0 ">
@@ -55,19 +53,23 @@ const CartProductList = () => {
       </div>
 
       {/* Menampilkan daftar produk atau pesan */}
-      {products.length === 0 ? (
+      {productCartProductList.length === 0 ? (
         <p className="pt-5 text-center text-3xl font-semibold text-gray-500">
           {" "}
           Belum ada produk di keranjangmu.
         </p>
       ) : (
         <div className="flex flex-col overflow-hidden rounded-bl-3xl rounded-br-3xl bg-white">
-          {products.map((product) => (
+          {productCartProductList.map((product) => (
             <CartProduct
-              key={product.id}
+              key={product.product_id}
               product={product}
               token={token}
               user={user}
+              setPrice={setPrice}
+              price={price}
+              setAmountProduct={setAmountProduct}
+              amountProduct={amountProduct}
             />
           ))}
         </div>

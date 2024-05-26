@@ -5,21 +5,20 @@ import Cookies from "js-cookie";
 import { toast, ToastContainer } from "react-toastify";
 
 
-const CartProduct = ({ product, token, user }) => {
+const CartProduct = ({ amountProduct, setAmountProduct, product, token, user, setPrice, price }) => {
   const [amount, setAmount] = useState(product.amount);
 
   // Fungsi untuk mengupdate jumlah produk di keranjang
-  const handleUpdateAmount = async (newAmount) => {
+  const handleUpdateAmount = async (newAmount, condition) => {
     const headers = new Headers();
     headers.append("Authorization", `Bearer ${token}`);
     headers.append("Content-Type", "application/json");
     const data = {
-      username: user.username,
-      product_id: product.product_id,
+      cart_id: product.cart_id,
       amount: newAmount,
     };
     const response = await fetch(
-      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/cart/bill/amount",
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/cart/amount",
       {
         method: "PUT",
         headers: headers,
@@ -29,9 +28,14 @@ const CartProduct = ({ product, token, user }) => {
     const resp = await response.json();
     if (resp.status_code === 201) {
       setAmount(newAmount);
+      if (condition === '-') {
+        setPrice(price - product.price)
+        setAmountProduct(newAmount === 0 ? amountProduct - 1 : amountProduct)
+      } else {
+        setPrice(price + product.price)
+      }
     }
   };
-  console.log(product);
 
   // * API untuk delete product
   const deleteProduct = async (product) => {
@@ -114,7 +118,7 @@ const CartProduct = ({ product, token, user }) => {
           <div className="flex items-center rounded-xl border-2 border-slate-300">
             <button
               className="px-3 font-bold text-gray-700"
-              onClick={() => handleUpdateAmount(amount - 1)}
+              onClick={() => handleUpdateAmount(amount - 1, '-')}
             >
               -
             </button>
@@ -124,7 +128,7 @@ const CartProduct = ({ product, token, user }) => {
 
             <button
               className="px-3 font-bold text-greenprime"
-              onClick={() => handleUpdateAmount(amount + 1)}
+              onClick={() => handleUpdateAmount(amount + 1, '+')}
             >
               +
             </button>
