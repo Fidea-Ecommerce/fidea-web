@@ -52,7 +52,7 @@ const DetailSection = ({ custom }) => {
     } // Panggil fungsi untuk mengambil data produk saat komponen dimuat
   }, [store, storeId, title]);
 
-  const apiAddCart = async (username, amount) => {
+  const apiAddCart = async () => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${token}`);

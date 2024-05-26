@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import CartProduct from "./CartProduct";
 import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
 
 const CartProductList = ({ amountProduct, setAmountProduct, price, productCartProductList, setProductCartProductList, setPrice }) => {
   // State untuk data pengguna dan token
-  const [user, setUser] = useState({});
   const [token, setToken] = useState("");
 
   // Fungsi untuk memuat keranjang belanja pengguna
@@ -29,9 +27,7 @@ const CartProductList = ({ amountProduct, setAmountProduct, price, productCartPr
 
     const accessToken = Cookies.get("access_token");
     if (accessToken) {
-      const decodedToken = jwtDecode(accessToken);
       setToken(accessToken);
-      setUser(decodedToken);
       getCart(accessToken);
     }
   }, [setProductCartProductList]);
@@ -65,11 +61,12 @@ const CartProductList = ({ amountProduct, setAmountProduct, price, productCartPr
               key={product.product_id}
               product={product}
               token={token}
-              user={user}
               setPrice={setPrice}
               price={price}
               setAmountProduct={setAmountProduct}
               amountProduct={amountProduct}
+              productCartProductList={productCartProductList}
+              setProductCartProductList={setProductCartProductList}
             />
           ))}
         </div>

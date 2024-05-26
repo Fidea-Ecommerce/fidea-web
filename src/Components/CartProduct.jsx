@@ -2,11 +2,25 @@ import { useState } from "react";
 import { FaRegHeart, FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 
-const CartProduct = ({ amountProduct, setAmountProduct, product, token, user, setPrice, price }) => {
+const CartProduct = ({ setProductCartProductList, productCartProductList, amountProduct, setAmountProduct, product, token, setPrice, price }) => {
   const [amount, setAmount] = useState(product.amount);
+
+  const successDeleteCart = async () => {
+    toast.success("Success Delete From Cart", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const failedDeleteCart = async () => {
+    toast.error("Failed Delete From Cart", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
 
   // Fungsi untuk mengupdate jumlah produk di keranjang
   const handleUpdateAmount = async (newAmount, condition) => {
@@ -38,14 +52,13 @@ const CartProduct = ({ amountProduct, setAmountProduct, product, token, user, se
   };
 
   // * API untuk delete product
-  const deleteProduct = async (product) => {
+  const deleteProduct = async () => {
     const token = Cookies.get("access_token");
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${token}`);
     const data = {
-      username: user.username,
-      product_id: parseInt(product.product_id),
+      cart_id: product.cart_id,
     };
     const response = await fetch(
       `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/cart`,
@@ -56,20 +69,29 @@ const CartProduct = ({ amountProduct, setAmountProduct, product, token, user, se
       },
     );
     const json = await response.json();
-    if (json.status_code === 200) {
-      toast.success("Product deleted successfully");
+    if (json.status_code === 201) {
+      const filteredProducts = productCartProductList.filter(product_ => {
+        if (product_.cart_id === product.cart_id) {
+          return false;
+        }
+        return true;
+      });
+      setProductCartProductList(filteredProducts)
+      return true
+    } else {
+      return false
     }
   };
 
   // * button delete
-  const handleDelete = (product) => {
-    console.log("Deleting product with ID:", product.product_id); // Debugging log
-    const result = deleteProduct(product);
+  const handleDelete = async () => {
+    const result = deleteProduct();
     if (result) {
-      toast.success("Berhasil dihapus ke keranjang!");
+      setPrice(price - (product.total_price))
+      await successDeleteCart()
     }
     if (result === false) {
-      toast.error("Gaga menghapus!");
+      await failedDeleteCart()
     }
   };
 
@@ -135,7 +157,6 @@ const CartProduct = ({ amountProduct, setAmountProduct, product, token, user, se
           </div>
         </div>
       </div>
-      <ToastContainer></ToastContainer>
     </div>
   );
 };
