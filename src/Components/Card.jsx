@@ -81,6 +81,20 @@ const Card = (props) => {
     });
   }
 
+  const failedAddCart = async () => {
+    toast.error("Failed Add To Cart", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const successAddCart = async () => {
+    toast.success("Success Add To Cart", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
   const handleFavorite = async () => {
     setLoading(true)
     if (product.is_favorite == false) {
@@ -164,13 +178,13 @@ const Card = (props) => {
   };
 
   // function menambahkan ke cart
-  const addToCart = () => {
+  const addToCart = async () => {
     const result = apiAddCart();
     if (result) {
-      alert("Ditambahkan ke cart!");
+      await successAddCart()
     }
     if (result === false) {
-      alert("gagal di tambahkan ke cart!");
+      await failedAddCart()
     }
     // toast.success("Berhasil dimasukkan ke keranjang!");
   };
