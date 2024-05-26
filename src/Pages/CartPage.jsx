@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { toast, ToastContainer } from "react-toastify";
 import { Helmet } from "react-helmet";
-import fidea from "../assets/fidea.png";
+import fidea from "../assets/fidea1.png";
 import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
