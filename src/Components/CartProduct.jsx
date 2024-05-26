@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { FaRegHeart, FaRegTrashAlt } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { FaRegHeart, FaRegTrashAlt, FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
@@ -7,6 +7,11 @@ import { toast } from "react-toastify";
 
 const CartProduct = ({ setProductCartProductList, productCartProductList, amountProduct, setAmountProduct, product, token, setPrice, price }) => {
   const [amount, setAmount] = useState(product.amount);
+  const [isFavorite, setIsFavorite] = useState(false)
+
+  useEffect(() => {
+    setIsFavorite(product.is_favorite)
+  }, [product]);
 
   const successDeleteCart = async () => {
     toast.success("Success Delete From Cart", {
@@ -20,6 +25,102 @@ const CartProduct = ({ setProductCartProductList, productCartProductList, amount
       position: "bottom-right",
       autoClose: 3000,
     });
+  }
+
+  const successAddFavorite = async () => {
+    toast.success("Success Add Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const failedAddFavorite = async () => {
+    toast.error("Failed Add Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const successRemoveFavorite = async () => {
+    toast.success("Success Remove Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const failedRemoveFavorite = async () => {
+    toast.error("Failed Remove Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const apiRemoveFavorite = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+    const data = {
+      seller_id: product.store_id,
+      product_id: product.product_id,
+    };
+    const response = await fetch(
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      {
+        method: "DELETE",
+        headers: headers,
+        body: JSON.stringify(data),
+      },
+    );
+    const resp = await response.json();
+    if (resp.status_code === 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const apiAddFavorite = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+    const data = {
+      seller_id: product.store_id,
+      product_id: product.product_id,
+    };
+    const response = await fetch(
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(data),
+      },
+    );
+    const resp = await response.json();
+    if (resp.status_code === 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const handleFavorite = async () => {
+    if (isFavorite === false) {
+      const result = await apiAddFavorite()
+      if (result) {
+        await successAddFavorite()
+        setIsFavorite(true)
+      } else {
+        await failedAddFavorite()
+      }
+    } else {
+      const result = await apiRemoveFavorite()
+      if (result) {
+        await successRemoveFavorite()
+        setIsFavorite(false)
+      } else {
+        await failedRemoveFavorite()
+      }
+    }
   }
 
   // Fungsi untuk mengupdate jumlah produk di keranjang
@@ -128,8 +229,8 @@ const CartProduct = ({ setProductCartProductList, productCartProductList, amount
           Rp <span>{product.price.toLocaleString("id-ID")}</span>
         </h1>
         <div className="flex gap-4">
-          <button className="text-slate-300 lg:text-3xl">
-            <FaRegHeart />
+          <button className="text-slate-300 lg:text-3xl" onClick={handleFavorite}>
+          {isFavorite ? <FaHeart color="red" /> : <FaRegHeart />}
           </button>
           <button
             className="text-slate-300 lg:text-3xl"
