@@ -2,24 +2,23 @@ import CartProductList from "../Components/CartProductList";
 import HeaderPage from "../Layout/HeaderPage";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import {jwtDecode} from "jwt-decode";
 import { toast, ToastContainer } from "react-toastify";
 import { Helmet } from "react-helmet";
 import fidea from "../assets/fidea.png";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const [price, setPrice] = useState(0);
-  const [user, setUser] = useState({});
   const [token, setToken] = useState("");
   const [productCartProductList, setProductCartProductList] = useState([]);
   const [amountProduct, setAmountProduct] = useState(0);
 
+  const navigate = useNavigate('/product')
+
   useEffect(() => {
     const accessToken = Cookies.get("access_token");
     if (accessToken) {
-      const decodedToken = jwtDecode(accessToken);
       setToken(accessToken);
-      setUser(decodedToken);
     }
   }, []);
 
@@ -52,19 +51,22 @@ const CartPage = () => {
     setAmountProduct(nonZeroAmountProducts.length);
   }, [productCartProductList]);
 
-  const checkout = async (token, user) => {
+  const failedCheckout = async () => {
+    toast.error("Failed Checkout", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const checkout = async () => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${token}`);
-    const data = {
-      username: user.username,
-    };
     const response = await fetch(
       "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/checkout",
       {
         method: "POST",
         headers: headers,
-        body: JSON.stringify(data),
       }
     );
     const resp = await response.json();
@@ -72,17 +74,12 @@ const CartPage = () => {
   };
 
   const handleCheckout = async () => {
-    try {
-      const result = await checkout(token, user);
+      const result = await checkout();
       if (result) {
-        toast.success("Checkout success");
+        navigate('/products')
       } else {
-        toast.error("Checkout failed");
+        await failedCheckout()
       }
-    } catch (error) {
-      console.error("Error during checkout:", error);
-      toast.error("Checkout failed");
-    }
   };
 
   return (
