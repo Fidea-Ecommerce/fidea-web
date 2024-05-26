@@ -3,7 +3,6 @@ import HeaderPage from "../Layout/HeaderPage";
 import Card from "../Components/Card";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import Cookies from "js-cookie";
 import { Helmet } from "react-helmet";
 import fidea from "../assets/fidea1.png";
