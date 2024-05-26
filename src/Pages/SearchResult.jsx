@@ -31,7 +31,7 @@ const SearchResult = () => {
         }
 
         const response = await fetch(
-          `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/search/nexblu store/1/${productName}`,
+          `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/search/${productName}`,
           {
             method: "GET",
             headers: headers,
