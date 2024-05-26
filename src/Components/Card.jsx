@@ -2,60 +2,164 @@ import { useEffect, useState } from "react";
 import { FaCartPlus, FaHeart, FaRegHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from 'react-toastify';
+
 
 const Card = (props) => {
-  const { product } = props;
-  // membuat fungsi untuk menambahkan ke keranjang dan wishlist
+  const { product, setList, listProductPage, setListProductPage, from, list, successAddFavoriteProductPage, successRemoveFavoriteProductPage, successAddFavoriteCardCluester, successRemoveFavoriteCardCluester } = props;
 
-  const [isInWishlist, setOnWishlist] = useState(false);
-
-  // const successWishlist = () => {
-  //   toast.success("DItambahkan ke favorit!", {
-  //     position: "top-center",
-  //   });
-  // };
-
-  // const removeWishlist = () => {
-  //   toast.success("Dihapus dari favorit!", {
-  //     position: "top-center",
-  //   });
-  // };
-
-  const wishlistToggle = () => {
-    setOnWishlist(!isInWishlist);
-    if (!isInWishlist) {
-      alert("Ditambahkan ke favorit!");
-      // successWishlist();
-    } else {
-      // removeWishlist();
-      alert("Dihapus dari favorit!");
-    }
-  };
-
-  const [user, setUser] = useState({});
   const [token, setToken] = useState("");
+
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const accessToken = Cookies.get("access_token");
     if (accessToken) {
-      const decodedToken = jwtDecode(accessToken);
       setToken(accessToken);
-      setUser(decodedToken);
     }
   }, []);
 
-  const apiAddCart = async (username) => {
+  const apiAddFavorite = async () => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${token}`);
     const data = {
-      username: username,
+      seller_id: product.store_id,
+      product_id: product.product_id,
+    };
+    const response = await fetch(
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(data),
+      },
+    );
+    const resp = await response.json();
+    if (resp.status_code === 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const apiRemoveFavorite = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+    const data = {
+      seller_id: product.store_id,
+      product_id: product.product_id,
+    };
+    const response = await fetch(
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      {
+        method: "DELETE",
+        headers: headers,
+        body: JSON.stringify(data),
+      },
+    );
+    const resp = await response.json();
+    if (resp.status_code === 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const failedAddFavorite = async () => {
+    toast.error("Failed Add To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const failedRemoveFavorite = async () => {
+    toast.error("Failed Remove To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const successAddCart = async () => {
+    toast.success("Success Add To Cart", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const failedAddCart = async () => {
+    toast.error("Failed Add To Cart", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const handleFavorite = async () => {
+    setLoading(true)
+    if (product.is_favorite == false) {
+      const result = await apiAddFavorite()
+      if (result) {
+        if (from === 'CardCluster') {
+          await successAddFavoriteCardCluester()
+          setList(
+            list.map((data) =>
+              data.product_id === product.product_id
+                ? { ...data, is_favorite: true }
+                : data
+            )
+          );
+        }
+        if (from === 'ProductPage') {
+          await successAddFavoriteProductPage()
+          setListProductPage(
+            listProductPage.map((data) =>
+              data.product_id === product.product_id
+                ? { ...data, is_favorite: true }
+                : data
+            )
+          );
+        }
+      } else {
+        await failedAddFavorite()
+      }
+    } else {
+      const result = await apiRemoveFavorite()
+      if (result) {
+        if (from === 'CardCluster') {
+          await successRemoveFavoriteCardCluester()
+          setList(
+            list.map((data) =>
+              data.product_id === product.product_id
+                ? { ...data, is_favorite: false }
+                : data
+            )
+          );
+        }
+        if (from === 'ProductPage') {
+          await successRemoveFavoriteProductPage()
+          setListProductPage(
+            listProductPage.map((data) =>
+              data.product_id === product.product_id
+                ? { ...data, is_favorite: false }
+                : data
+            )
+          );
+        }
+      } else {
+        await failedRemoveFavorite()
+      }
+    }
+    setLoading(false)
+  };
+
+  const apiAddCart = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+    const data = {
       amount: 1, // * default 1 untuk keranjang pada tombol di card component
-      product_id: parseInt(product.id), // ! UBAH KE INTEGER UNTUK KIRIM
-      seller: "nexblu",
+      product_id: product.product_id,
     };
     const response = await fetch(
       "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/cart",
@@ -74,13 +178,13 @@ const Card = (props) => {
   };
 
   // function menambahkan ke cart
-  const addToCart = () => {
-    const result = apiAddCart(user.username, 1, product.id);
+  const addToCart = async () => {
+    const result = apiAddCart();
     if (result) {
-      toast.success("Berhasil dimasukkan ke keranjang!");
+      await successAddCart()
     }
     if (result === false) {
-      toast.error("Gagal dimasukkan ke keranjang!");
+      await failedAddCart()
     }
     // toast.success("Berhasil dimasukkan ke keranjang!");
   };
@@ -88,7 +192,8 @@ const Card = (props) => {
   return (
     <div className="border-slate relative flex w-36 flex-col justify-between overflow-hidden rounded-xl lg:h-[500px] lg:w-72 lg:rounded-3xl ">
       <Link
-        to={`/products/detail/${product.product_id}`}
+
+        to={`/products/detail/${product.store}/${product.store_id}/${product.title}`}
         className="relative flex h-full w-36 flex-col justify-between rounded-2xl border border-slate-300 bg-white p-2 drop-shadow-sm lg:w-72 lg:rounded-3xl lg:p-5"
       >
         <img
@@ -118,12 +223,11 @@ const Card = (props) => {
         <FaCartPlus color="white" />
       </button>
       <button
-        onClick={wishlistToggle}
+        onClick={loading ? null : handleFavorite}
         className="absolute right-1 top-1 h-fit w-fit rounded-bl-xl rounded-tr-xl bg-white p-2 text-xl lg:right-5 lg:top-5 lg:rounded-bl-3xl lg:p-3  lg:text-3xl"
       >
-        {isInWishlist ? <FaHeart color="red" /> : <FaRegHeart />}
+        {product.is_favorite ? <FaHeart color="red" /> : <FaRegHeart />}
       </button>
-      <ToastContainer />
     </div>
   );
 };

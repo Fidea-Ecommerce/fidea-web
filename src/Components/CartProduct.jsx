@@ -1,25 +1,139 @@
-import { useState } from "react";
-import { FaRegHeart, FaRegTrashAlt } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { FaRegHeart, FaRegTrashAlt, FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
-const CartProduct = ({ product, token, user }) => {
+
+const CartProduct = ({ setProductCartProductList, productCartProductList, amountProduct, setAmountProduct, product, token, setPrice, price }) => {
   const [amount, setAmount] = useState(product.amount);
+  const [isFavorite, setIsFavorite] = useState(false)
+
+  useEffect(() => {
+    setIsFavorite(product.is_favorite)
+  }, [product]);
+
+  const successDeleteCart = async () => {
+    toast.success("Success Delete From Cart", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const failedDeleteCart = async () => {
+    toast.error("Failed Delete From Cart", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const successAddFavorite = async () => {
+    toast.success("Success Add Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const failedAddFavorite = async () => {
+    toast.error("Failed Add Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const successRemoveFavorite = async () => {
+    toast.success("Success Remove Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const failedRemoveFavorite = async () => {
+    toast.error("Failed Remove Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const apiRemoveFavorite = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+    const data = {
+      seller_id: product.store_id,
+      product_id: product.product_id,
+    };
+    const response = await fetch(
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      {
+        method: "DELETE",
+        headers: headers,
+        body: JSON.stringify(data),
+      },
+    );
+    const resp = await response.json();
+    if (resp.status_code === 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const apiAddFavorite = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+    const data = {
+      seller_id: product.store_id,
+      product_id: product.product_id,
+    };
+    const response = await fetch(
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(data),
+      },
+    );
+    const resp = await response.json();
+    if (resp.status_code === 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const handleFavorite = async () => {
+    if (isFavorite === false) {
+      const result = await apiAddFavorite()
+      if (result) {
+        await successAddFavorite()
+        setIsFavorite(true)
+      } else {
+        await failedAddFavorite()
+      }
+    } else {
+      const result = await apiRemoveFavorite()
+      if (result) {
+        await successRemoveFavorite()
+        setIsFavorite(false)
+      } else {
+        await failedRemoveFavorite()
+      }
+    }
+  }
 
   // Fungsi untuk mengupdate jumlah produk di keranjang
-  const handleUpdateAmount = async (newAmount) => {
+  const handleUpdateAmount = async (newAmount, condition) => {
     const headers = new Headers();
     headers.append("Authorization", `Bearer ${token}`);
     headers.append("Content-Type", "application/json");
     const data = {
-      username: user.username,
-      product_id: product.product_id,
+      cart_id: product.cart_id,
       amount: newAmount,
     };
     const response = await fetch(
-      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/cart/bill/amount",
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/cart/amount",
       {
         method: "PUT",
         headers: headers,
@@ -29,19 +143,23 @@ const CartProduct = ({ product, token, user }) => {
     const resp = await response.json();
     if (resp.status_code === 201) {
       setAmount(newAmount);
+      if (condition === '-') {
+        setPrice(price - product.price)
+        setAmountProduct(newAmount === 0 ? amountProduct - 1 : amountProduct)
+      } else {
+        setPrice(price + product.price)
+      }
     }
   };
-  console.log(product);
 
   // * API untuk delete product
-  const deleteProduct = async (product) => {
+  const deleteProduct = async () => {
     const token = Cookies.get("access_token");
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${token}`);
     const data = {
-      username: user.username,
-      product_id: parseInt(product.product_id),
+      cart_id: product.cart_id,
     };
     const response = await fetch(
       `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/cart`,
@@ -52,20 +170,29 @@ const CartProduct = ({ product, token, user }) => {
       },
     );
     const json = await response.json();
-    if (json.status_code === 200) {
-      toast.success("Product deleted successfully");
+    if (json.status_code === 201) {
+      const filteredProducts = productCartProductList.filter(product_ => {
+        if (product_.cart_id === product.cart_id) {
+          return false;
+        }
+        return true;
+      });
+      setProductCartProductList(filteredProducts)
+      return true
+    } else {
+      return false
     }
   };
 
   // * button delete
-  const handleDelete = (product) => {
-    console.log("Deleting product with ID:", product.product_id); // Debugging log
-    const result = deleteProduct(product);
+  const handleDelete = async () => {
+    const result = deleteProduct();
     if (result) {
-      toast.success("Berhasil dihapus ke keranjang!");
+      setPrice(price - (product.total_price))
+      await successDeleteCart()
     }
     if (result === false) {
-      toast.error("Gaga menghapus!");
+      await failedDeleteCart()
     }
   };
 
@@ -79,7 +206,7 @@ const CartProduct = ({ product, token, user }) => {
         />
         <Link
           // ! menggunakan props product , dan mengambil data product_id dan bukan id biasa
-          to={`/products/detail/${product.product_id}`}
+          to={`/products/detail/${product.store}/${product.store_id}/${product.title}`}
           className="flex gap-5"
         >
           {/* <!-- image --> */}
@@ -102,8 +229,8 @@ const CartProduct = ({ product, token, user }) => {
           Rp <span>{product.price.toLocaleString("id-ID")}</span>
         </h1>
         <div className="flex gap-4">
-          <button className="text-slate-300 lg:text-3xl">
-            <FaRegHeart />
+          <button className="text-slate-300 lg:text-3xl" onClick={handleFavorite}>
+          {isFavorite ? <FaHeart color="red" /> : <FaRegHeart />}
           </button>
           <button
             className="text-slate-300 lg:text-3xl"
@@ -114,7 +241,7 @@ const CartProduct = ({ product, token, user }) => {
           <div className="flex items-center rounded-xl border-2 border-slate-300">
             <button
               className="px-3 font-bold text-gray-700"
-              onClick={() => handleUpdateAmount(amount - 1)}
+              onClick={() => handleUpdateAmount(amount - 1, '-')}
             >
               -
             </button>
@@ -124,14 +251,13 @@ const CartProduct = ({ product, token, user }) => {
 
             <button
               className="px-3 font-bold text-greenprime"
-              onClick={() => handleUpdateAmount(amount + 1)}
+              onClick={() => handleUpdateAmount(amount + 1, '+')}
             >
               +
             </button>
           </div>
         </div>
       </div>
-      <ToastContainer></ToastContainer>
     </div>
   );
 };
