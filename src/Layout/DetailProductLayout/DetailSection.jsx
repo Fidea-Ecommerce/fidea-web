@@ -3,7 +3,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import MoreInfoProduct from "./MoreInfoProduct";
 import { Navigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from 'react-toastify';
 
 
 const DetailSection = ({ custom }) => {
@@ -17,6 +17,8 @@ const DetailSection = ({ custom }) => {
   const [stock, setStock] = useState(0); // state stock product
 
   const [token, setToken] = useState('')
+
+  const [loading, setLoading] = useState(false)
 
   // mengambil data dari ecommerce-api
   useEffect(() => {
@@ -90,6 +92,34 @@ const DetailSection = ({ custom }) => {
     setIsActive(!isActive);
   };
 
+  const successAddFavoriteDetailSection = async () => {
+    toast.success("Success Add To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const successRemoveFavoriteDetailSection = async () => {
+    toast.success("Success Remove To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const successAddCart = async () => {
+    toast.success("Success Add To Cart", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const failedAddCart = async () => {
+    toast.error("Failed Add To Cart", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
   // function untuk button wishlist dan cart yang dimana nanti akan dimasukkan ke database
 
   const apiAddFavorite = async () => {
@@ -141,10 +171,11 @@ const DetailSection = ({ custom }) => {
   }
 
   const handleFavorite = async () => {
+    setLoading(true)
     if (product.is_favorite == false) {
       const result = await apiAddFavorite()
       if (result) {
-        alert("Ditambahkan ke favorit!");
+        await successAddFavoriteDetailSection()
         setProduct((prevProduct) => ({
           ...prevProduct,
           is_favorite: true,
@@ -153,13 +184,14 @@ const DetailSection = ({ custom }) => {
     } else {
       const result = await apiRemoveFavorite()
       if (result) {
-        alert("Dihapus dari favorit!");
+        await successRemoveFavoriteDetailSection()
         setProduct((prevProduct) => ({
           ...prevProduct,
           is_favorite: false,
         }));
       }
     }
+    setLoading(false)
   };
 
   // handler button add amount cart
@@ -180,8 +212,10 @@ const DetailSection = ({ custom }) => {
   const handleAddToCart = async () => {
     const result = await apiAddCart();
     if (result) {
-      alert("Ditambahkan ke cart!");
+      await successAddCart()
       setAmount(0)
+    } else {
+      await failedAddCart()
     }
   };
 
@@ -269,7 +303,7 @@ const DetailSection = ({ custom }) => {
               Tambah ke Keranjang
             </button>
             <button
-              onClick={handleFavorite}
+              onClick={loading ? null : handleFavorite}
               className="h-fit rounded-full border border-black p-4 "
             >
               {product.is_favorite ? (

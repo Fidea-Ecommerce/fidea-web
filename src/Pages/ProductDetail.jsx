@@ -3,6 +3,7 @@ import Serupa from "../Layout/DetailProductLayout/Serupa";
 import HeaderPage from "../Layout/HeaderPage";
 import { Helmet } from "react-helmet";
 import fidea from '../assets/fidea1.png'
+import { ToastContainer } from 'react-toastify';
 
 const ProductDetail = () => {
   return (
@@ -17,6 +18,7 @@ const ProductDetail = () => {
         <DetailSection></DetailSection>
         <Serupa></Serupa>
       </div>
+      <ToastContainer />
     </>
   );
 };

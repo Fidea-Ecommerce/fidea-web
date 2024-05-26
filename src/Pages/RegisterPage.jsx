@@ -4,7 +4,6 @@ import { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import RegisterBG from "../assets/RegisterBG.webp";
 import { Helmet } from "react-helmet";
 import fidea from '../assets/fidea1.png'
@@ -39,7 +38,7 @@ const RegisterPage = () => {
   };
 
   const failedRegister = async () => {
-    toast.error("Failed Register", {
+    toast.success("Failed Register", {
       position: "bottom-right"
     });
   }

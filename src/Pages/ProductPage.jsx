@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Helmet } from "react-helmet";
 import fidea from '../assets/fidea1.png'
+import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const ProductPage = () => {
   const [listProductPage, setListProductPage] = useState([]);
@@ -66,6 +68,20 @@ const ProductPage = () => {
     });
   };
 
+  const successAddFavoriteProductPage = async () => {
+    toast.success("Success Add To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const successRemoveFavoriteProductPage = async () => {
+    toast.success("Success Remove To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
   return (
     <>
       <Helmet>
@@ -80,7 +96,7 @@ const ProductPage = () => {
             {/* Looping dari API nya  */}
             {listProductPage.map((product) => (
               <div key={product.product_id} className="flex justify-center">
-                <Card product={product} listProductPage={listProductPage} setListProductPage={setListProductPage} from={'ProductPage'} />
+                <Card successAddFavoriteProductPage={successAddFavoriteProductPage} successRemoveFavoriteProductPage={successRemoveFavoriteProductPage} product={product} listProductPage={listProductPage} setListProductPage={setListProductPage} from={'ProductPage'} />
               </div>
             ))}
           </div>
@@ -101,6 +117,7 @@ const ProductPage = () => {
           </button>
         )}
       </section>
+      <ToastContainer />
     </>
   );
 };
