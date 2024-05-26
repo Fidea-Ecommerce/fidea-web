@@ -9,6 +9,7 @@ import Cookies from "js-cookie";
 const ProductSection = () => {
   const [list, setList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const accessToken = Cookies.get("access_token");
@@ -31,18 +32,14 @@ const ProductSection = () => {
           const json = await response.json();
           console.log(json.result);
           if (json.status_code === 200) {
-            setList(json.result);
-            setIsLoading(false);
+            setList(json.result.slice(0, 10)); // Limit to 10 items
           } else {
-            setIsLoading(false);
-            // 
+            throw new Error("Failed to fetch products");
           }
         } catch (error) {
-          setIsLoading(false);
-          // 
+          setError(error.message);
         } finally {
           setIsLoading(false);
-          // 
         }
       };
       getProduct("nexblu store");
@@ -51,17 +48,17 @@ const ProductSection = () => {
     }
   }, []);
 
-  var settings = {
-    dots: false,
+  const settings = {
+    dots: true,
     infinite: false,
     speed: 500,
     slidesToShow: 3,
-    slidesToScroll: 4,
+    slidesToScroll: 3,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 5,
+          slidesToShow: 4,
           slidesToScroll: 1,
           infinite: true,
           dots: true,
@@ -70,7 +67,7 @@ const ProductSection = () => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2,
           slidesToScroll: 1,
         },
       },
@@ -85,25 +82,34 @@ const ProductSection = () => {
   };
 
   return (
-    <section className="flex h-screen w-screen flex-col items-center justify-center bg-[#EBEBEB]">
+    <section className="flex h-screen w-screen flex-col items-center justify-center bg-[#EBEBEB] pt-10">
       <div>
         <h1 className="py-2 text-center text-xl font-bold md:py-10 md:text-4xl">
           Our Product
         </h1>
 
-        <div className="flex w-full items-center justify-center">
-          <div className="w-[90%]">
+        <div className="flex w-[80vw] items-center justify-center lg:w-[90vw] ">
+          <div className="w-[80vw]">
             {isLoading ? (
               <div className="flex h-72 items-center justify-center">
                 <p className="text-center text-lg font-semibold">Loading...</p>
               </div>
+            ) : error ? (
+              <div className="flex h-72 items-center justify-center">
+                <p className="text-center text-lg font-semibold text-red-600">
+                  {error}
+                </p>
+              </div>
             ) : (
               <Slider
                 {...settings}
-                className="ml-5 flex items-center justify-center lg:pl-20"
+                className="ml-5 flex items-center justify-center"
               >
                 {list.map((product) => (
-                  <div key={product.product_id} className="flex justify-center">
+                  <div
+                    key={product.product_id}
+                    className="flex justify-center p-2"
+                  >
                     <Card product={product} />
                   </div>
                 ))}
