@@ -105,7 +105,7 @@ const CartProduct = ({ setProductCartProductList, productCartProductList, amount
         />
         <Link
           // ! menggunakan props product , dan mengambil data product_id dan bukan id biasa
-          to={`/products/detail/${product.product_id}`}
+          to={`/products/detail/${product.store}/${product.store_id}/${product.title}`}
           className="flex gap-5"
         >
           {/* <!-- image --> */}
