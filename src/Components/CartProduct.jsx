@@ -3,7 +3,7 @@ import { FaRegHeart, FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 
 const CartProduct = ({ product, token, user }) => {
   const [amount, setAmount] = useState(product.amount);

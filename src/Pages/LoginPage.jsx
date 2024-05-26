@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import "react-toastify/dist/ReactToastify.css";
 import LoginBG from "../assets/LoginBG.webp";
 import { Helmet } from "react-helmet";
 import fidea from '../assets/fidea1.png'

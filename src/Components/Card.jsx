@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { FaCartPlus, FaHeart, FaRegHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from 'react-toastify';
+
 
 const Card = (props) => {
-  const { product, setList, listProductPage, setListProductPage, from, list } = props;
+  const { product, setList, listProductPage, setListProductPage, from, list, successAddFavoriteProductPage, successRemoveFavoriteProductPage, successAddFavoriteCardCluester, successRemoveFavoriteCardCluester } = props;
 
   const [token, setToken] = useState("");
+
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const accessToken = Cookies.get("access_token");
@@ -64,12 +67,27 @@ const Card = (props) => {
     }
   }
 
+  const failedAddFavorite = async () => {
+    toast.error("Failed Add To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const failedRemoveFavorite = async () => {
+    toast.error("Failed Remove To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
   const handleFavorite = async () => {
+    setLoading(true)
     if (product.is_favorite == false) {
       const result = await apiAddFavorite()
       if (result) {
-        alert("Ditambahkan ke favorit!");
         if (from === 'CardCluster') {
+          await successAddFavoriteCardCluester()
           setList(
             list.map((data) =>
               data.product_id === product.product_id
@@ -79,6 +97,7 @@ const Card = (props) => {
           );
         }
         if (from === 'ProductPage') {
+          await successAddFavoriteProductPage()
           setListProductPage(
             listProductPage.map((data) =>
               data.product_id === product.product_id
@@ -87,12 +106,14 @@ const Card = (props) => {
             )
           );
         }
+      } else {
+        await failedAddFavorite()
       }
     } else {
       const result = await apiRemoveFavorite()
       if (result) {
-        alert("Dihapus dari favorit!");
         if (from === 'CardCluster') {
+          await successRemoveFavoriteCardCluester()
           setList(
             list.map((data) =>
               data.product_id === product.product_id
@@ -102,6 +123,7 @@ const Card = (props) => {
           );
         }
         if (from === 'ProductPage') {
+          await successRemoveFavoriteProductPage()
           setListProductPage(
             listProductPage.map((data) =>
               data.product_id === product.product_id
@@ -110,8 +132,11 @@ const Card = (props) => {
             )
           );
         }
+      } else {
+        await failedRemoveFavorite()
       }
     }
+    setLoading(false)
   };
 
   const apiAddCart = async () => {
@@ -184,7 +209,7 @@ const Card = (props) => {
         <FaCartPlus color="white" />
       </button>
       <button
-        onClick={handleFavorite}
+        onClick={loading ? null : handleFavorite}
         className="absolute right-1 top-1 h-fit w-fit rounded-bl-xl rounded-tr-xl bg-white p-2 text-xl lg:right-5 lg:top-5 lg:rounded-bl-3xl lg:p-3  lg:text-3xl"
       >
         {product.is_favorite ? <FaHeart color="red" /> : <FaRegHeart />}
