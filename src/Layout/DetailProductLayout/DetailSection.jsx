@@ -99,8 +99,22 @@ const DetailSection = ({ custom }) => {
     });
   }
 
+  const failedAddFavoriteDetailSection = async () => {
+    toast.error("Failed Add To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
   const successRemoveFavoriteDetailSection = async () => {
     toast.success("Success Remove To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const failedRemoveFavoriteDetailSection = async () => {
+    toast.error("Failed Remove To Favorite", {
       position: "bottom-right",
       autoClose: 3000,
     });
@@ -180,6 +194,8 @@ const DetailSection = ({ custom }) => {
           ...prevProduct,
           is_favorite: true,
         }));
+      } else {
+        await failedAddFavoriteDetailSection()
       }
     } else {
       const result = await apiRemoveFavorite()
@@ -189,6 +205,8 @@ const DetailSection = ({ custom }) => {
           ...prevProduct,
           is_favorite: false,
         }));
+      } else {
+        await failedRemoveFavoriteDetailSection()
       }
     }
     setLoading(false)
