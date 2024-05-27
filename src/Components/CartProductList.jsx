@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import CartProduct from "./CartProduct";
 import Cookies from "js-cookie";
 
-const CartProductList = ({ amountProduct, setAmountProduct, price, productCartProductList, setProductCartProductList, setPrice }) => {
+const CartProductList = ({
+  amountProduct,
+  setAmountProduct,
+  price,
+  productCartProductList,
+  setProductCartProductList,
+  setPrice,
+}) => {
   // State untuk data pengguna dan token
   const [token, setToken] = useState("");
 
@@ -33,7 +40,7 @@ const CartProductList = ({ amountProduct, setAmountProduct, price, productCartPr
   }, [setProductCartProductList]);
 
   return (
-    <div className=" flex w-auto flex-col justify-between gap-5 md:mx-10 lg:mx-0 ">
+    <div className=" flex w-full   flex-col justify-between gap-5 md:mx-10 lg:mx-0 ">
       {/* <!-- product item --> */}
       <div className="  flex h-fit w-full items-center justify-between rounded-tl-xl rounded-tr-xl border-b border-slate-200 bg-white px-4 py-4   lg:rounded-tl-3xl lg:rounded-tr-3xl lg:p-10 ">
         <div className="flex items-center">
