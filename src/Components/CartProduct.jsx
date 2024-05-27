@@ -4,13 +4,21 @@ import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
-
-const CartProduct = ({ setProductCartProductList, productCartProductList, amountProduct, setAmountProduct, product, token, setPrice, price }) => {
+const CartProduct = ({
+  setProductCartProductList,
+  productCartProductList,
+  amountProduct,
+  setAmountProduct,
+  product,
+  token,
+  setPrice,
+  price,
+}) => {
   const [amount, setAmount] = useState(product.amount);
-  const [isFavorite, setIsFavorite] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
-    setIsFavorite(product.is_favorite)
+    setIsFavorite(product.is_favorite);
   }, [product]);
 
   const successDeleteCart = async () => {
@@ -18,42 +26,42 @@ const CartProduct = ({ setProductCartProductList, productCartProductList, amount
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const failedDeleteCart = async () => {
     toast.error("Failed Delete From Cart", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const successAddFavorite = async () => {
     toast.success("Success Add Favorite", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const failedAddFavorite = async () => {
     toast.error("Failed Add Favorite", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const successRemoveFavorite = async () => {
     toast.success("Success Remove Favorite", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const failedRemoveFavorite = async () => {
     toast.error("Failed Remove Favorite", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const apiRemoveFavorite = async () => {
     const headers = new Headers();
@@ -77,7 +85,7 @@ const CartProduct = ({ setProductCartProductList, productCartProductList, amount
     } else {
       return false;
     }
-  }
+  };
 
   const apiAddFavorite = async () => {
     const headers = new Headers();
@@ -101,27 +109,27 @@ const CartProduct = ({ setProductCartProductList, productCartProductList, amount
     } else {
       return false;
     }
-  }
+  };
 
   const handleFavorite = async () => {
     if (isFavorite === false) {
-      const result = await apiAddFavorite()
+      const result = await apiAddFavorite();
       if (result) {
-        await successAddFavorite()
-        setIsFavorite(true)
+        await successAddFavorite();
+        setIsFavorite(true);
       } else {
-        await failedAddFavorite()
+        await failedAddFavorite();
       }
     } else {
-      const result = await apiRemoveFavorite()
+      const result = await apiRemoveFavorite();
       if (result) {
-        await successRemoveFavorite()
-        setIsFavorite(false)
+        await successRemoveFavorite();
+        setIsFavorite(false);
       } else {
-        await failedRemoveFavorite()
+        await failedRemoveFavorite();
       }
     }
-  }
+  };
 
   // Fungsi untuk mengupdate jumlah produk di keranjang
   const handleUpdateAmount = async (newAmount, condition) => {
@@ -143,11 +151,11 @@ const CartProduct = ({ setProductCartProductList, productCartProductList, amount
     const resp = await response.json();
     if (resp.status_code === 201) {
       setAmount(newAmount);
-      if (condition === '-') {
-        setPrice(price - product.price)
-        setAmountProduct(newAmount === 0 ? amountProduct - 1 : amountProduct)
+      if (condition === "-") {
+        setPrice(price - product.price);
+        setAmountProduct(newAmount === 0 ? amountProduct - 1 : amountProduct);
       } else {
-        setPrice(price + product.price)
+        setPrice(price + product.price);
       }
     }
   };
@@ -171,16 +179,16 @@ const CartProduct = ({ setProductCartProductList, productCartProductList, amount
     );
     const json = await response.json();
     if (json.status_code === 201) {
-      const filteredProducts = productCartProductList.filter(product_ => {
+      const filteredProducts = productCartProductList.filter((product_) => {
         if (product_.cart_id === product.cart_id) {
           return false;
         }
         return true;
       });
-      setProductCartProductList(filteredProducts)
-      return true
+      setProductCartProductList(filteredProducts);
+      return true;
     } else {
-      return false
+      return false;
     }
   };
 
@@ -188,17 +196,17 @@ const CartProduct = ({ setProductCartProductList, productCartProductList, amount
   const handleDelete = async () => {
     const result = deleteProduct();
     if (result) {
-      setPrice(price - (product.total_price))
-      await successDeleteCart()
+      setPrice(price - product.total_price);
+      await successDeleteCart();
     }
     if (result === false) {
-      await failedDeleteCart()
+      await failedDeleteCart();
     }
   };
 
   return (
-    <div className="justify- relative flex border-t border-slate-300 p-2 py-3 sm:justify-between lg:p-10">
-      <div className="flex w-full justify-normal gap-10 sm:w-fit sm:justify-between ">
+    <div className=" relative flex border-t border-slate-300 p-2 py-3 sm:justify-between lg:p-10">
+      <div className="flex w-auto justify-normal gap-5 sm:w-fit sm:justify-between md:gap-0 ">
         <input
           type="checkbox"
           className="ml-2 h-4 w-4 rounded-md md:mr-10 lg:h-6 lg:w-6"
@@ -207,7 +215,7 @@ const CartProduct = ({ setProductCartProductList, productCartProductList, amount
         <Link
           // ! menggunakan props product , dan mengambil data product_id dan bukan id biasa
           to={`/products/detail/${product.store}/${product.store_id}/${product.title}`}
-          className="flex gap-5"
+          className="flex gap-5 md:gap-0 "
         >
           {/* <!-- image --> */}
           <img
@@ -224,13 +232,16 @@ const CartProduct = ({ setProductCartProductList, productCartProductList, amount
           </div>
         </Link>
       </div>
-      <div className="absolute bottom-2 right-0 flex-col justify-between pr-5 sm:static sm:flex">
+      <div className="absolute bottom-2 right-0 flex-col justify-between  pr-5 sm:static sm:flex lg:pr-0">
         <h1 className="text-right text-lg font-semibold lg:text-xl">
           Rp <span>{product.price.toLocaleString("id-ID")}</span>
         </h1>
         <div className="flex gap-4">
-          <button className="text-slate-300 lg:text-3xl" onClick={handleFavorite}>
-          {isFavorite ? <FaHeart color="red" /> : <FaRegHeart />}
+          <button
+            className="text-slate-300 lg:text-3xl"
+            onClick={handleFavorite}
+          >
+            {isFavorite ? <FaHeart color="red" /> : <FaRegHeart />}
           </button>
           <button
             className="text-slate-300 lg:text-3xl"
@@ -241,7 +252,7 @@ const CartProduct = ({ setProductCartProductList, productCartProductList, amount
           <div className="flex items-center rounded-xl border-2 border-slate-300">
             <button
               className="px-3 font-bold text-gray-700"
-              onClick={() => handleUpdateAmount(amount - 1, '-')}
+              onClick={() => handleUpdateAmount(amount - 1, "-")}
             >
               -
             </button>
@@ -251,7 +262,7 @@ const CartProduct = ({ setProductCartProductList, productCartProductList, amount
 
             <button
               className="px-3 font-bold text-greenprime"
-              onClick={() => handleUpdateAmount(amount + 1, '+')}
+              onClick={() => handleUpdateAmount(amount + 1, "+")}
             >
               +
             </button>
