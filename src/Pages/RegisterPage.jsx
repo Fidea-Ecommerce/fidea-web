@@ -104,6 +104,7 @@ const RegisterPage = () => {
         );
       }
     }
+
     return valid;
   };
 

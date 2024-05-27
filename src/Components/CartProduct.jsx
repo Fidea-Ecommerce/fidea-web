@@ -206,7 +206,7 @@ const CartProduct = ({
 
   return (
     <div className=" relative flex border-t border-slate-300 p-2 py-3 sm:justify-between lg:p-10">
-      <div className="flex w-auto justify-normal  sm:w-fit sm:justify-between ">
+      <div className="flex w-auto justify-normal gap-5 sm:w-fit sm:justify-between md:gap-0 ">
         <input
           type="checkbox"
           className="ml-2 h-4 w-4 rounded-md md:mr-10 lg:h-6 lg:w-6"
@@ -215,7 +215,7 @@ const CartProduct = ({
         <Link
           // ! menggunakan props product , dan mengambil data product_id dan bukan id biasa
           to={`/products/detail/${product.store}/${product.store_id}/${product.title}`}
-          className="flex "
+          className="flex gap-5 md:gap-0 "
         >
           {/* <!-- image --> */}
           <img
@@ -232,7 +232,7 @@ const CartProduct = ({
           </div>
         </Link>
       </div>
-      <div className="absolute bottom-2 right-0 flex-col justify-between  sm:static sm:flex">
+      <div className="absolute bottom-2 right-0 flex-col justify-between  pr-5 sm:static sm:flex lg:pr-0">
         <h1 className="text-right text-lg font-semibold lg:text-xl">
           Rp <span>{product.price.toLocaleString("id-ID")}</span>
         </h1>
