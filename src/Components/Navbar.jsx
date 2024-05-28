@@ -2,9 +2,8 @@ import { MdPerson } from "react-icons/md";
 import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IoIosHome } from "react-icons/io";
-import { IoCall } from "react-icons/io5";
 import { FaBoxesPacking } from "react-icons/fa6";
-import { FaInfo, FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart } from "react-icons/fa";
 import { Button, Drawer, Popover } from "@mui/material";
 import { GiHamburgerMenu } from "react-icons/gi";
 import WebLogo from "./WebLogo";
@@ -17,9 +16,11 @@ const Navbar = (props) => {
   const history = useStateHistory();
   const [user, setUser] = useState();
   const [onLogin, setOnLogin] = useState(false);
-  const { text = "text-white", custom } = props;
+  const { text = "text-white ", custom } = props;
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const [popoverAnchorEl, setPopoverAnchorEl] = useState(null); // State untuk ancor Popover
+  const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
+  const [activateWallet, setActivateWallet] = useState(false);
+  const [wallet, setWallet] = useState(); // State untuk ancor Popover
 
   useEffect(() => {
     const accessToken = Cookies.get("access_token");
@@ -50,14 +51,16 @@ const Navbar = (props) => {
   const handlePopoverClose = () => {
     setPopoverAnchorEl(null);
   };
-
+  // * untuk wallet
+  const handleActivateWallet = () => {
+    setActivateWallet(true);
+    setWallet(1000000); // Example balance, replace with API call later
+  };
   const openPopover = Boolean(popoverAnchorEl);
 
   const navLinks = [
     { to: "/", text: "Home", icon: <IoIosHome size={30} /> },
-    { to: "/about", text: "About", icon: <FaInfo size={30} /> },
     { to: "/products", text: "Product", icon: <FaBoxesPacking size={30} /> },
-    { to: "/contact", text: "Contact Us", icon: <IoCall size={30} /> },
     { to: "/cart", text: "Your Cart", icon: <FaShoppingCart size={30} /> },
   ];
 
@@ -169,6 +172,18 @@ const Navbar = (props) => {
               ""
             ) : (
               <div className="flex items-center gap-1 font-normal">
+                {activateWallet ? (
+                  <div className="pr-2 font-bold text-greenprime">
+                    Wallet : Rp. {wallet.toLocaleString()}
+                  </div>
+                ) : (
+                  <button
+                    className="rounded-xl bg-greenprime p-2 font-semibold text-white"
+                    onClick={handleActivateWallet}
+                  >
+                    Activate Wallet
+                  </button>
+                )}
                 <div className="rounded-3xl bg-greenprime p-3 font-bold text-white">
                   <MdPerson />
                 </div>
@@ -199,6 +214,7 @@ const Navbar = (props) => {
                     {user.username}
                   </span>
                 </Button>
+                {/* mengecek apakah user sudah mengaktivasi wallet atau belum */}
               </div>
             )}
           </li>
