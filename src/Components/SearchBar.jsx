@@ -58,7 +58,7 @@ const SearchBar = ({ custom }) => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Cari Produk Anda disini..."
-        className="  max-w-40 border-none bg-transparent text-xs outline-none sm:w-64"
+        className="  w-40 border-none bg-transparent text-xs outline-none sm:w-64"
       />
     </form>
   );
