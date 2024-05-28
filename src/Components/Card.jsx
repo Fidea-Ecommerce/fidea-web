@@ -2,15 +2,25 @@ import { useEffect, useState } from "react";
 import { FaCartPlus, FaHeart, FaRegHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
-import { toast } from 'react-toastify';
-
+import { toast } from "react-toastify";
 
 const Card = (props) => {
-  const { product, setList, listProductPage, setListProductPage, from, list, successAddFavoriteProductPage, successRemoveFavoriteProductPage, successAddFavoriteCardCluester, successRemoveFavoriteCardCluester } = props;
+  const {
+    product,
+    setList,
+    listProductPage,
+    setListProductPage,
+    from,
+    list,
+    successAddFavoriteProductPage,
+    successRemoveFavoriteProductPage,
+    successAddFavoriteCardCluester,
+    successRemoveFavoriteCardCluester,
+  } = props;
 
   const [token, setToken] = useState("");
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const accessToken = Cookies.get("access_token");
@@ -41,7 +51,7 @@ const Card = (props) => {
     } else {
       return false;
     }
-  }
+  };
 
   const apiRemoveFavorite = async () => {
     const headers = new Headers();
@@ -65,92 +75,92 @@ const Card = (props) => {
     } else {
       return false;
     }
-  }
+  };
 
   const failedAddFavorite = async () => {
     toast.error("Failed Add To Favorite", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const failedRemoveFavorite = async () => {
     toast.error("Failed Remove To Favorite", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const successAddCart = async () => {
     toast.success("Success Add To Cart", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const failedAddCart = async () => {
     toast.error("Failed Add To Cart", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const handleFavorite = async () => {
-    setLoading(true)
+    setLoading(true);
     if (product.is_favorite == false) {
-      const result = await apiAddFavorite()
+      const result = await apiAddFavorite();
       if (result) {
-        if (from === 'CardCluster') {
-          await successAddFavoriteCardCluester()
+        if (from === "CardCluster") {
+          await successAddFavoriteCardCluester();
           setList(
             list.map((data) =>
               data.product_id === product.product_id
                 ? { ...data, is_favorite: true }
-                : data
-            )
+                : data,
+            ),
           );
         }
-        if (from === 'ProductPage') {
-          await successAddFavoriteProductPage()
+        if (from === "ProductPage") {
+          await successAddFavoriteProductPage();
           setListProductPage(
             listProductPage.map((data) =>
               data.product_id === product.product_id
                 ? { ...data, is_favorite: true }
-                : data
-            )
+                : data,
+            ),
           );
         }
       } else {
-        await failedAddFavorite()
+        await failedAddFavorite();
       }
     } else {
-      const result = await apiRemoveFavorite()
+      const result = await apiRemoveFavorite();
       if (result) {
-        if (from === 'CardCluster') {
-          await successRemoveFavoriteCardCluester()
+        if (from === "CardCluster") {
+          await successRemoveFavoriteCardCluester();
           setList(
             list.map((data) =>
               data.product_id === product.product_id
                 ? { ...data, is_favorite: false }
-                : data
-            )
+                : data,
+            ),
           );
         }
-        if (from === 'ProductPage') {
-          await successRemoveFavoriteProductPage()
+        if (from === "ProductPage") {
+          await successRemoveFavoriteProductPage();
           setListProductPage(
             listProductPage.map((data) =>
               data.product_id === product.product_id
                 ? { ...data, is_favorite: false }
-                : data
-            )
+                : data,
+            ),
           );
         }
       } else {
-        await failedRemoveFavorite()
+        await failedRemoveFavorite();
       }
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   const apiAddCart = async () => {
@@ -181,18 +191,17 @@ const Card = (props) => {
   const addToCart = async () => {
     const result = apiAddCart();
     if (result) {
-      await successAddCart()
+      await successAddCart();
     }
     if (result === false) {
-      await failedAddCart()
+      await failedAddCart();
     }
     // toast.success("Berhasil dimasukkan ke keranjang!");
   };
 
   return (
-    <div className="border-slate relative flex w-36 flex-col justify-between overflow-hidden rounded-xl lg:h-[500px] lg:w-72 lg:rounded-3xl ">
+    <div className="border-slate relative flex h-80 w-36 flex-col justify-between overflow-hidden rounded-xl lg:h-[500px] lg:w-72 lg:rounded-3xl ">
       <Link
-
         to={`/products/detail/${product.store}/${product.store_id}/${product.title}`}
         className="relative flex h-full w-36 flex-col justify-between rounded-2xl border border-slate-300 bg-white p-2 drop-shadow-sm lg:w-72 lg:rounded-3xl lg:p-5"
       >

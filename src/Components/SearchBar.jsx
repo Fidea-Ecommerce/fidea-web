@@ -35,7 +35,7 @@ const SearchBar = ({ custom }) => {
     headers.append("Authorization", `Bearer ${token}`);
 
     const response = await fetch(
-      `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/search/nexblu store/1/${productName}`,
+      `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/search/${productName}`,
       {
         method: "GET",
         headers: headers,
@@ -58,7 +58,7 @@ const SearchBar = ({ custom }) => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Cari Produk Anda disini..."
-        className="w-42 border-none bg-transparent outline-none sm:w-64"
+        className="  w-40 border-none bg-transparent text-xs outline-none sm:w-64"
       />
     </form>
   );

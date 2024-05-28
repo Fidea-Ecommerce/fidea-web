@@ -6,7 +6,7 @@ import { FaEyeSlash } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import RegisterBG from "../assets/RegisterBG.webp";
 import { Helmet } from "react-helmet";
-import fidea from '../assets/fidea1.png'
+import fidea from "../assets/fidea1.png";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -19,10 +19,11 @@ const RegisterPage = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
-  const [messageEmailError, setMessageEmailError] = useState('');
-  const [messageUsernameError, setMessageUsernameError] = useState('');
-  const [messagePasswordError, setMessagePasswordError] = useState('');
-  const [messageConfirmPasswordError, setMessageConfirmPasswordError] = useState('');
+  const [messageEmailError, setMessageEmailError] = useState("");
+  const [messageUsernameError, setMessageUsernameError] = useState("");
+  const [messagePasswordError, setMessagePasswordError] = useState("");
+  const [messageConfirmPasswordError, setMessageConfirmPasswordError] =
+    useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -39,56 +40,56 @@ const RegisterPage = () => {
 
   const failedRegister = async () => {
     toast.success("Failed Register", {
-      position: "bottom-right"
+      position: "bottom-right",
     });
-  }
+  };
 
   const successRegister = async () => {
     toast.success("Check Your Email", {
-      position: "bottom-right"
+      position: "bottom-right",
     });
-  }
+  };
 
   const clearForm = async () => {
-    setEmail('');
-    setUsername('');
-    setPassword('');
-    setConfirmPassword('');
-    setEmailError(false)
-    setUsernameError(false)
-    setPasswordError(false)
-    setConfirmPasswordError(false)
-    setMessageEmailError('')
-    setMessageUsernameError('')
-    setMessagePasswordError('')
-    setMessageConfirmPasswordError('')
-  }
+    setEmail("");
+    setUsername("");
+    setPassword("");
+    setConfirmPassword("");
+    setEmailError(false);
+    setUsernameError(false);
+    setPasswordError(false);
+    setConfirmPasswordError(false);
+    setMessageEmailError("");
+    setMessageUsernameError("");
+    setMessagePasswordError("");
+    setMessageConfirmPasswordError("");
+  };
 
   const validationForm = async () => {
     let valid = true;
 
-    if (email === '') {
+    if (email === "") {
       setEmailError(true);
       valid = false;
-      setMessageEmailError('Email Is Required.')
+      setMessageEmailError("Email Is Required.");
     } else {
-      setEmailError(false)
+      setEmailError(false);
     }
 
-    if (username === '') {
+    if (username === "") {
       setUsernameError(true);
       valid = false;
-      setMessageUsernameError('Username Is Required.')
+      setMessageUsernameError("Username Is Required.");
     } else {
       setUsernameError(false);
     }
 
-    if (password === '' && confirmPassword === '') {
+    if (password === "" && confirmPassword === "") {
       setPasswordError(true);
-      setConfirmPasswordError(true)
+      setConfirmPasswordError(true);
       valid = false;
-      setMessagePasswordError('Password Is Required.')
-      setMessageConfirmPasswordError('Password Is Required.')
+      setMessagePasswordError("Password Is Required.");
+      setMessageConfirmPasswordError("Password Is Required.");
     } else {
       if (password === confirmPassword) {
         setPasswordError(false);
@@ -97,88 +98,98 @@ const RegisterPage = () => {
         setPasswordError(true);
         setConfirmPasswordError(true);
         valid = false;
-        setMessagePasswordError('Password And Confirm Password Are Different.')
-        setMessageConfirmPasswordError('Password And Confirm Password Are Different.')
+        setMessagePasswordError("Password And Confirm Password Are Different.");
+        setMessageConfirmPasswordError(
+          "Password And Confirm Password Are Different.",
+        );
       }
     }
+
     return valid;
-  }
+  };
 
   const apiResgister = async (email, username, password, confirmPassword) => {
     const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    const url = 'https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/register';
+    headers.append("Content-Type", "application/json");
+    const url =
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/register";
     const data = {
       username: username,
       email: email,
       password: password,
-      confirm_password: confirmPassword
+      confirm_password: confirmPassword,
     };
 
     try {
       const response = await fetch(url, {
-        method: 'POST',
+        method: "POST",
         headers: headers,
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
 
       const resp = await response.json();
-      if (resp['status_code'] === 201) {
-        return true
+      if (resp["status_code"] === 201) {
+        return true;
       } else {
-        return false
+        return false;
       }
     } catch (error) {
-      return false
+      return false;
     }
-  }
+  };
 
   const apiEmailVerify = async (email) => {
     const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    const url = 'https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/email-verify';
+    headers.append("Content-Type", "application/json");
+    const url =
+      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/email-verify";
     const data = {
       email: email,
     };
 
     try {
       const response = await fetch(url, {
-        method: 'POST',
+        method: "POST",
         headers: headers,
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
 
       const resp = await response.json();
-      console.log(resp)
-      if (resp['status_code'] === 201) {
-        return true
+      console.log(resp);
+      if (resp["status_code"] === 201) {
+        return true;
       } else {
-        return false
+        return false;
       }
     } catch (error) {
-      return false
+      return false;
     }
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true)
-    const validator = await validationForm()
+    setLoading(true);
+    const validator = await validationForm();
     if (validator) {
-      const resultRegister = await apiResgister(email, username, password, confirmPassword)
+      const resultRegister = await apiResgister(
+        email,
+        username,
+        password,
+        confirmPassword,
+      );
       if (resultRegister) {
-        await clearForm()
-        const finalResult = await apiEmailVerify(email)
+        await clearForm();
+        const finalResult = await apiEmailVerify(email);
         if (finalResult) {
-          await successRegister()
-          setLoading(false)
-          return
+          await successRegister();
+          setLoading(false);
+          return;
         }
       }
     }
-    await failedRegister()
-    setLoading(false)
-  }
+    await failedRegister();
+    setLoading(false);
+  };
 
   return (
     <>
@@ -196,14 +207,18 @@ const RegisterPage = () => {
           {/* Logo (misalnya WebLogo) */}
           <WebLogo />
           <p className="my-5 font-semibold">Please enter your details</p>
-          <form className="sm:w-3/4 lg:w-4/5" onSubmit={loading ? null : handleSubmit}>
+          <form
+            className="sm:w-3/4 lg:w-4/5"
+            onSubmit={loading ? null : handleSubmit}
+          >
             {/* Input untuk email */}
             <input
               type="text"
               name="email"
               placeholder="Email"
-              className={`mb-2 w-full rounded-full border ${emailError ? "border-red-500" : "border-black"
-                } p-3 pl-8 text-lg text-slate-700 outline-none`}
+              className={`mb-2 w-full rounded-full border ${
+                emailError ? "border-red-500" : "border-black"
+              } p-3 pl-8 text-lg text-slate-700 outline-none`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -215,8 +230,9 @@ const RegisterPage = () => {
               type="text"
               name="username"
               placeholder="Username"
-              className={`mb-2 w-full rounded-full border ${usernameError ? "border-red-500" : "border-black"
-                } p-3 pl-8 text-lg text-slate-700 outline-none`}
+              className={`mb-2 w-full rounded-full border ${
+                usernameError ? "border-red-500" : "border-black"
+              } p-3 pl-8 text-lg text-slate-700 outline-none`}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
@@ -229,8 +245,9 @@ const RegisterPage = () => {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
-                className={`w-auto flex-1 border-none outline-none ${passwordError ? "border-red-500" : "border-black"
-                  }  text-slate-700`}
+                className={`w-auto flex-1 border-none outline-none ${
+                  passwordError ? "border-red-500" : "border-black"
+                }  text-slate-700`}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -251,8 +268,9 @@ const RegisterPage = () => {
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 placeholder="Confirm Password"
-                className={`w-auto flex-1 border-none outline-none ${confirmPasswordError ? "border-red-500" : "border-black"
-                  }  text-slate-700`}
+                className={`w-auto flex-1 border-none outline-none ${
+                  confirmPasswordError ? "border-red-500" : "border-black"
+                }  text-slate-700`}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />

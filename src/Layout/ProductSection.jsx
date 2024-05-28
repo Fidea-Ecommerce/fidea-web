@@ -69,6 +69,7 @@ const ProductSection = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
+          arrowarrows: false,
         },
       },
       {
@@ -76,6 +77,8 @@ const ProductSection = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
+          dots: false,
+          arrows: false,
         },
       },
     ],
@@ -88,8 +91,8 @@ const ProductSection = () => {
           Our Product
         </h1>
 
-        <div className="flex w-[80vw] items-center justify-center lg:w-[90vw] ">
-          <div className="w-[80vw]">
+        <div className="flex w-screen items-center justify-center lg:w-[90vw] ">
+          <div className="w-full pl-4 lg:pl-14">
             {isLoading ? (
               <div className="flex h-72 items-center justify-center">
                 <p className="text-center text-lg font-semibold">Loading...</p>

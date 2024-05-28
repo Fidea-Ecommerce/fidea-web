@@ -3,7 +3,6 @@ import HeaderPage from "../Layout/HeaderPage";
 import Card from "../Components/Card";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import Cookies from "js-cookie";
 import { Helmet } from "react-helmet";
 import fidea from "../assets/fidea1.png";
@@ -31,7 +30,7 @@ const SearchResult = () => {
         }
 
         const response = await fetch(
-          `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/search/nexblu store/1/${productName}`,
+          `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/search/${productName}`,
           {
             method: "GET",
             headers: headers,
