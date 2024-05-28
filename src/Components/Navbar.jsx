@@ -35,6 +35,7 @@ const Navbar = (props) => {
 
   const handleLogout = () => {
     Cookies.remove("access_token");
+    Cookies.remove("refresh_token");
     setUser(null);
     history.push("/");
     window.location.reload();
