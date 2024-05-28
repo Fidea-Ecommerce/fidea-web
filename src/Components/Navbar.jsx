@@ -9,13 +9,11 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import WebLogo from "./WebLogo";
 import SearchBar from "./SearchBar";
 import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
-import { useStateHistory } from "@mantine/hooks";
-import { useNavigate } from "react-router-dom";
+import {jwtDecode} from "jwt-decode";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Navbar = (props) => {
-  const history = useStateHistory();
   const [user, setUser] = useState();
   const [onLogin, setOnLogin] = useState(false);
   const { text = "text-white ", custom } = props;
@@ -23,22 +21,38 @@ const Navbar = (props) => {
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [activateWallet, setActivateWallet] = useState(false);
   const [wallet, setWallet] = useState(0); // State untuk ancor Popover
-  const [token, setToken] = useState('')
+  const [token, setToken] = useState('');
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const accessToken = Cookies.get("access_token");
     if (accessToken) {
-      //  * jika user login maka akan ditampilkan profile di navbar jika tidak maka akan menampilkan tombol login
       setOnLogin(true);
       const decodeToken = jwtDecode(accessToken);
       setUser(decodeToken);
-      setToken(accessToken)
-      setActivateWallet(decodeToken.wallet_active)
-      setWallet(decodeToken.amount)
+      setToken(accessToken);
+      setActivateWallet(decodeToken.wallet_active);
+      setWallet(decodeToken.amount);
     }
   }, []);
+
+  const getTextWallet = () => {
+    if (location.pathname === '/') {
+      return (
+        <div className="pr-2 font-bold text-[#FFFFFF]">
+          Wallet : Rp. {wallet.toLocaleString()}
+        </div>
+      );
+    } else {
+      return (
+        <div className="pr-2 font-bold text-[#000000]">
+          Wallet : Rp. {wallet.toLocaleString()}
+        </div>
+      );
+    }
+  };
 
   const apiActiveWallet = async () => {
     const headers = new Headers();
@@ -62,13 +76,13 @@ const Navbar = (props) => {
     } catch (error) {
       return false;
     }
-  }
+  };
 
   const handleLogout = () => {
     Cookies.remove("access_token");
     Cookies.remove("refresh_token");
     setUser(null);
-    history.push("/");
+    navigate("/");
     window.location.reload();
   };
 
@@ -91,20 +105,20 @@ const Navbar = (props) => {
     setPopoverAnchorEl(null);
   };
 
-  // * untuk wallet
   const handleActivateWallet = async () => {
-    if (activateWallet === false) {
-      const result = await apiActiveWallet()
+    if (!activateWallet) {
+      const result = await apiActiveWallet();
       if (result) {
-        navigate('/login')
+        navigate('/login');
         Cookies.remove("access_token");
         Cookies.remove("refresh_token");
         setUser(null);
       } else {
-        await failedActiveWallet()
+        await failedActiveWallet();
       }
     }
   };
+
   const openPopover = Boolean(popoverAnchorEl);
 
   const navLinks = [
@@ -113,15 +127,14 @@ const Navbar = (props) => {
     { to: "/cart", text: "Your Cart", icon: <FaShoppingCart size={30} /> },
   ];
 
-  // * inisialisasi variabel list untuk di render di drawer comp
   const list = () => (
     <div
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
-      className="flex h-fit flex-col items-center  font-semibold "
+      className="flex h-fit flex-col items-center font-semibold "
     >
-      <ul className={`${text} flex w-56  flex-col gap-5  px-5  font-semibold`}>
+      <ul className={`${text} flex w-56 flex-col gap-5 px-5 font-semibold`}>
         <div className="border-b-2 border-slate-500 py-5">
           <li className="mb-5 flex justify-center p-0">
             <WebLogo custom="block sm:hidden font:thin"></WebLogo>
@@ -138,13 +151,12 @@ const Navbar = (props) => {
               </Link>
             )}
           </li>
-          <li className=" ">
+          <li>
             {onLogin === false ? (
               ""
             ) : (
-              <div className="flex items-center gap-5 font-normal ">
-                <div className="w-fit rounded-3xl  bg-greenprime p-2 font-bold ">
-                  {/* USERNAME */}
+              <div className="flex items-center gap-5 font-normal">
+                <div className="w-fit rounded-3xl bg-greenprime p-2 font-bold">
                   <MdPerson />
                 </div>
                 <span className="text-black">{user.username}</span>
@@ -166,31 +178,18 @@ const Navbar = (props) => {
             </NavLink>
           </li>
         ))}
-        <li>
-          {/* <NavLink
-            to={"/cart"}
-            className="flex h-fit w-fit items-center rounded-3xl   text-greenprime"
-          >
-            <FaShoppingCart size={30} className="mr-5" /> <span> </span>{" "}
-            Keranjang{" "}
-          </NavLink> */}
-        </li>
       </ul>
     </div>
   );
-
-  // *untuk menyimpan list yang akan ditampilkan component drawer saat responsive
 
   return (
     <>
       <div
         className={`flex h-fit w-screen items-center justify-around lg:justify-between ${custom}`}
       >
-        <WebLogo custom={" hidden sm:block text-xs  sm:text-xl"}></WebLogo>
+        <WebLogo custom={"hidden sm:block text-xs sm:text-xl"}></WebLogo>
         <SearchBar></SearchBar>
-
-        {/* * untuk desktop,saat responsive navbar desktopp akan dihidden */}
-        <div className=" hidden lg:flex">
+        <div className="hidden lg:flex">
           <ul
             className={`${text} flex w-fit items-center gap-5 justify-self-end font-semibold drop-shadow-xl`}
           >
@@ -199,12 +198,6 @@ const Navbar = (props) => {
                 <NavLink to={link.to}>{link.text}</NavLink>
               </li>
             ))}
-            {/* <NavLink
-            to={"/cart"}
-            className="flex h-fit w-fit items-center rounded-3xl bg-greenprime px-3 py-1 text-white"
-          >
-            Keranjang <span> </span> <FaShoppingCart size={20} />{" "}
-          </NavLink> */}
             <li>
               {onLogin ? (
                 ""
@@ -223,9 +216,7 @@ const Navbar = (props) => {
               ) : (
                 <div className="flex items-center gap-1 font-normal">
                   {activateWallet ? (
-                    <div className="pr-2 font-bold text-greenprime">
-                      Wallet : Rp. {wallet.toLocaleString()}
-                    </div>
+                    getTextWallet()
                   ) : (
                     <button
                       className="rounded-xl bg-greenprime p-2 font-semibold text-white"
@@ -253,7 +244,7 @@ const Navbar = (props) => {
                     <div>
                       <button
                         onClick={handleLogout}
-                        className=" bg-red-600 p-3 font-semibold text-white"
+                        className="bg-red-600 p-3 font-semibold text-white"
                       >
                         Logout
                       </button>
@@ -264,18 +255,12 @@ const Navbar = (props) => {
                       {user.username}
                     </span>
                   </Button>
-                  {/* mengecek apakah user sudah mengaktivasi wallet atau belum */}
                 </div>
               )}
             </li>
           </ul>
         </div>
-        {/* =======desktop end */}
-
-        {/* untuk mobile nav drawer */}
-        <div className="h-fit w-fit pt-2 lg:hidden ">
-          {" "}
-          {/* Display for mobile */}
+        <div className="h-fit w-fit pt-2 lg:hidden">
           <button onClick={toggleDrawer(true)} className="h-fit w-fit text-black">
             <GiHamburgerMenu size={30} color="black" />
           </button>
