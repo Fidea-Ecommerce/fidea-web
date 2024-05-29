@@ -93,18 +93,32 @@ const Navbar = (props) => {
             {onLogin === false ? (
               ""
             ) : (
-              <div className="flex items-center gap-5 font-normal ">
-                <div className="w-fit rounded-3xl  bg-greenprime p-2 font-bold ">
-                  {/* USERNAME */}
-                  <MdPerson />
+              <div className="flex flex-col items-center gap-3">
+                <div className="flex items-center gap-5 font-normal ">
+                  <div className="w-fit rounded-3xl  bg-greenprime p-2 font-bold ">
+                    {/* USERNAME */}
+                    <MdPerson />
+                  </div>
+                  <span className="text-black">{user.username}</span>
+                  <button
+                    className="text-sm font-semibold text-red-500"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
                 </div>
-                <span className="text-black">{user.username}</span>
-                <button
-                  className="text-sm font-semibold text-red-500"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
+                {activateWallet ? (
+                  <div className="pr-2 font-bold text-greenprime">
+                    Wallet : Rp. {wallet.toLocaleString()}
+                  </div>
+                ) : (
+                  <button
+                    className="rounded-xl bg-greenprime p-2 font-semibold text-white"
+                    onClick={handleActivateWallet}
+                  >
+                    Activate Wallet
+                  </button>
+                )}
               </div>
             )}
           </li>
@@ -178,7 +192,7 @@ const Navbar = (props) => {
                   </div>
                 ) : (
                   <button
-                    className="rounded-xl bg-greenprime p-2 font-semibold text-white"
+                    className="mr-3 rounded-xl bg-greenprime  p-2 font-semibold text-white"
                     onClick={handleActivateWallet}
                   >
                     Activate Wallet

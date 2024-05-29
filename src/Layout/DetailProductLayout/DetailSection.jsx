@@ -3,13 +3,20 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import MoreInfoProduct from "./MoreInfoProduct";
 import { Navigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const DetailSection = ({ custom }) => {
   // mengambil ID dari routing lalu dicari ID  API card  menggunakan params, lalu merendernya
   const [isActive, setIsActive] = useState(false);
   let { store, storeId, title } = useParams(); // Terima ID produk dari URL
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState({
+    price: null,
+    title: "",
+    description: "",
+    image_url: "",
+    is_favorite: false,
+    stock: 0,
+  });
   const [notFound, setNotFound] = useState(false);
 
   const [amount, setAmount] = useState(0); // state amount wishlist
@@ -17,7 +24,7 @@ const DetailSection = ({ custom }) => {
 
   const [token, setToken] = useState("");
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   // mengambil data dari ecommerce-api
   useEffect(() => {
@@ -96,42 +103,42 @@ const DetailSection = ({ custom }) => {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const failedAddFavoriteDetailSection = async () => {
     toast.error("Failed Add To Favorite", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const successRemoveFavoriteDetailSection = async () => {
     toast.success("Success Remove To Favorite", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const failedRemoveFavoriteDetailSection = async () => {
     toast.error("Failed Remove To Favorite", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const successAddCart = async () => {
     toast.success("Success Add To Cart", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const failedAddCart = async () => {
     toast.error("Failed Add To Cart", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   // function untuk button wishlist dan cart yang dimana nanti akan dimasukkan ke database
 
@@ -184,31 +191,31 @@ const DetailSection = ({ custom }) => {
   };
 
   const handleFavorite = async () => {
-    setLoading(true)
+    setLoading(true);
     if (product.is_favorite == false) {
       const result = await apiAddFavorite();
       if (result) {
-        await successAddFavoriteDetailSection()
+        await successAddFavoriteDetailSection();
         setProduct((prevProduct) => ({
           ...prevProduct,
           is_favorite: true,
         }));
       } else {
-        await failedAddFavoriteDetailSection()
+        await failedAddFavoriteDetailSection();
       }
     } else {
       const result = await apiRemoveFavorite();
       if (result) {
-        await successRemoveFavoriteDetailSection()
+        await successRemoveFavoriteDetailSection();
         setProduct((prevProduct) => ({
           ...prevProduct,
           is_favorite: false,
         }));
       } else {
-        await failedRemoveFavoriteDetailSection()
+        await failedRemoveFavoriteDetailSection();
       }
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   // handler button add amount cart
@@ -229,10 +236,16 @@ const DetailSection = ({ custom }) => {
   const handleAddToCart = async () => {
     const result = await apiAddCart();
     if (result) {
-      await successAddCart()
-      setAmount(0)
+      await successAddCart();
+      setAmount(0);
     } else {
-      await failedAddCart()
+      await failedAddCart();
+    }
+  };
+
+  const formatPrice = (price) => {
+    if (typeof price === "number") {
+      return price.toLocaleString("id-ID");
     }
   };
 
@@ -258,7 +271,7 @@ const DetailSection = ({ custom }) => {
             <p className="text-sm text-slate-500">{product.description}</p>
             <h1 className="mb-5 mt-10 flex items-start gap-1 font-semibold">
               <span className="font-sm h-full items-start">Rp</span>{" "}
-              <span className="text-3xl">{product.price}</span>
+              <span className="text-3xl">{formatPrice(product.price)}</span>
             </h1>
           </div>
           {/* variant */}
