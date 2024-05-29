@@ -155,17 +155,32 @@ const Navbar = (props) => {
             {onLogin === false ? (
               ""
             ) : (
-              <div className="flex items-center gap-5 font-normal">
-                <div className="w-fit rounded-3xl bg-greenprime p-2 font-bold">
-                  <MdPerson />
+              <div className="flex flex-col items-center gap-3">
+                <div className="flex items-center gap-5 font-normal ">
+                  <div className="w-fit rounded-3xl  bg-greenprime p-2 font-bold ">
+                    {/* USERNAME */}
+                    <MdPerson />
+                  </div>
+                  <span className="text-black">{user.username}</span>
+                  <button
+                    className="text-sm font-semibold text-red-500"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
                 </div>
-                <span className="text-black">{user.username}</span>
-                <button
-                  className="text-sm font-semibold text-red-500"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
+                {activateWallet ? (
+                  <div className="pr-2 font-bold text-greenprime">
+                    Wallet : Rp. {wallet.toLocaleString()}
+                  </div>
+                ) : (
+                  <button
+                    className="rounded-xl bg-greenprime p-2 font-semibold text-white"
+                    onClick={handleActivateWallet}
+                  >
+                    Activate Wallet
+                  </button>
+                )}
               </div>
             )}
           </li>
@@ -193,18 +208,52 @@ const Navbar = (props) => {
           <ul
             className={`${text} flex w-fit items-center gap-5 justify-self-end font-semibold drop-shadow-xl`}
           >
-            {navLinks.map((link, index) => (
-              <li key={index}>
-                <NavLink to={link.to}>{link.text}</NavLink>
-              </li>
-            ))}
-            <li>
-              {onLogin ? (
-                ""
-              ) : (
-                <Link
-                  to="/login"
-                  className="rounded-3xl bg-greenprime px-5 py-1 font-bold text-white"
+            Keranjang <span> </span> <FaShoppingCart size={20} />{" "}
+          </NavLink> */}
+          <li>
+            {onLogin ? (
+              ""
+            ) : (
+              <Link
+                to="/login"
+                className="rounded-3xl bg-greenprime px-5 py-1 font-bold text-white"
+              >
+                Login
+              </Link>
+            )}
+          </li>
+          <li>
+            {onLogin === false ? (
+              ""
+            ) : (
+              <div className="flex items-center gap-1 font-normal">
+                {activateWallet ? (
+                  <div className="pr-2 font-bold text-greenprime">
+                    Wallet : Rp. {wallet.toLocaleString()}
+                  </div>
+                ) : (
+                  <button
+                    className="mr-3 rounded-xl bg-greenprime  p-2 font-semibold text-white"
+                    onClick={handleActivateWallet}
+                  >
+                    Activate Wallet
+                  </button>
+                )}
+                <div className="rounded-3xl bg-greenprime p-3 font-bold text-white">
+                  <MdPerson />
+                </div>
+                <Popover
+                  open={openPopover}
+                  anchorEl={popoverAnchorEl}
+                  onClose={handlePopoverClose}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
                 >
                   Login
                 </Link>
