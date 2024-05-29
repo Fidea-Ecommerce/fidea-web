@@ -48,7 +48,6 @@ const ProductSection = () => {
   }, []);
 
   const settings = {
-    dots: true,
     infinite: false,
     speed: 500,
     slidesToShow: 3,
@@ -60,7 +59,6 @@ const ProductSection = () => {
           slidesToShow: 4,
           slidesToScroll: 1,
           infinite: true,
-          dots: true,
         },
       },
       {
@@ -76,7 +74,6 @@ const ProductSection = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
-          dots: false,
           arrows: false,
         },
       },
@@ -84,14 +81,14 @@ const ProductSection = () => {
   };
 
   return (
-    <section className="flex h-screen w-screen flex-col items-center justify-center bg-[#EBEBEB] pt-10">
+    <section className="flex h-screen w-screen flex-col items-center justify-center bg-[#EBEBEB] pb-20 pt-10">
       <div>
         <h1 className="py-2 text-center text-xl font-bold md:py-10 md:text-4xl">
           Our Product
         </h1>
 
         <div className="flex w-screen items-center justify-center lg:w-[90vw] ">
-          <div className="w-full pl-4 lg:pl-14">
+          <div className=" mr-5 w-[95vw]  md:pl-4 lg:pl-14">
             {isLoading ? (
               <div className="flex h-72 items-center justify-center">
                 <p className="text-center text-lg font-semibold">Loading...</p>

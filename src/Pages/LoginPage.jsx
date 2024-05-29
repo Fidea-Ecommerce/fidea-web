@@ -90,17 +90,17 @@ const LoginPage = () => {
               type="text"
               name="email"
               placeholder="Email"
-              className="mb-2 w-full rounded-full border border-black p-3 pl-8 text-lg text-slate-700 outline-none"
+              className="mb-2 w-[90vw] rounded-full border border-black p-3 pl-8 text-lg text-slate-700 outline-none sm:w-full"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             {/* Password Input */}
-            <div className="mb-2 flex w-full justify-between rounded-full border border-black p-3 pl-8 text-lg text-slate-700 outline-none">
+            <div className="mb-2 flex w-[90vw] justify-between rounded-full border border-black p-3 pl-8 text-lg text-slate-700 outline-none sm:w-full">
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
-                className="w-auto flex-1 border-none outline-none"
+                className="w-[90vw] flex-1 border-none outline-none sm:w-auto"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -144,7 +144,7 @@ const LoginPage = () => {
           </form>
         </div>
         {/* Image Section */}
-        <div className="hidden lg:block lg:w-[600px]">
+        <div className="hidden lg:block lg:w-1/2">
           <img
             src={LoginBG}
             alt="login image"

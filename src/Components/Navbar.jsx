@@ -220,44 +220,13 @@ const Navbar = (props) => {
                 </Link>
               )}
             </li>
-            <li>
-              {onLogin === false ? (
-                ""
-              ) : (
-                <div className="flex items-center gap-1 font-normal">
-                  {activateWallet ? (
-                    <div className="pr-2 font-bold text-greenprime">
-                      Wallet : Rp. {wallet.toLocaleString()}
-                    </div>
-                  ) : (
-                    <button
-                      className="mr-3 rounded-xl bg-greenprime  p-2 font-semibold text-white"
-                      onClick={handleActivateWallet}
-                    >
-                      Activate Wallet
-                    </button>
-                  )}
-                  <div className="rounded-3xl bg-greenprime p-3 font-bold text-white">
-                    <MdPerson />
-                  </div>
-                  <Popover
-                    open={openPopover}
-                    anchorEl={popoverAnchorEl}
-                    onClose={handlePopoverClose}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                  >
-                    <Link to="/login">Login</Link>
-                  </Popover>
-                </div>
-              )}
-            </li>
+            {navLinks.map((link, index) => (
+              <li key={index}>
+                <NavLink to={link.to} className="flex gap-5 ">
+                  {link.text}
+                </NavLink>
+              </li>
+            ))}
             <li>
               {onLogin === false ? (
                 ""
