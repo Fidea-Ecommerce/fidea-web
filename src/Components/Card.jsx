@@ -16,6 +16,14 @@ const Card = (props) => {
     successRemoveFavoriteProductPage,
     successAddFavoriteCardCluester,
     successRemoveFavoriteCardCluester,
+    successAddFavoriteHomePage, 
+    successRemoveFavoriteHomePage, 
+    setListHomePage, 
+    listHomePage, 
+    successAddFavoriteSearchResult, 
+    successRemoveFavoriteSearchResult, 
+    listSearchResult, 
+    setListSearchResult
   } = props;
 
   const [token, setToken] = useState("");
@@ -119,11 +127,28 @@ const Card = (props) => {
                 : data,
             ),
           );
-        }
-        if (from === "ProductPage") {
+        } else if (from === "ProductPage") {
           await successAddFavoriteProductPage();
           setListProductPage(
             listProductPage.map((data) =>
+              data.product_id === product.product_id
+                ? { ...data, is_favorite: true }
+                : data,
+            ),
+          );
+        } else if (from === 'HomePage') {
+          await successAddFavoriteHomePage();
+          setListHomePage(
+            listHomePage.map((data) =>
+              data.product_id === product.product_id
+                ? { ...data, is_favorite: true }
+                : data,
+            ),
+          );
+        } else if (from === 'SearchResult') {
+          await successAddFavoriteSearchResult();
+          setListSearchResult(
+            listSearchResult.map((data) =>
               data.product_id === product.product_id
                 ? { ...data, is_favorite: true }
                 : data,
@@ -145,11 +170,28 @@ const Card = (props) => {
                 : data,
             ),
           );
-        }
-        if (from === "ProductPage") {
+        } else if (from === "ProductPage") {
           await successRemoveFavoriteProductPage();
           setListProductPage(
             listProductPage.map((data) =>
+              data.product_id === product.product_id
+                ? { ...data, is_favorite: false }
+                : data,
+            ),
+          );
+        } else if (from === "HomePage") {
+          await successRemoveFavoriteHomePage();
+          setListHomePage(
+            listHomePage.map((data) =>
+              data.product_id === product.product_id
+                ? { ...data, is_favorite: false }
+                : data,
+            ),
+          );
+        } else if (from === "SearchResult") {
+          await successRemoveFavoriteSearchResult();
+          setListSearchResult(
+            listSearchResult.map((data) =>
               data.product_id === product.product_id
                 ? { ...data, is_favorite: false }
                 : data,

@@ -6,11 +6,12 @@ import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import { Helmet } from "react-helmet";
 import fidea from "../assets/fidea1.png";
+import { toast, ToastContainer } from "react-toastify";
 
 const SearchResult = () => {
   const { productName } = useParams();
   const [showScrollButton, setShowScrollButton] = useState(false);
-  const [list, setList] = useState([]);
+  const [listSearchResult, setListSearchResult] = useState([]);
   const [token, setToken] = useState("");
 
   useEffect(() => {
@@ -39,7 +40,7 @@ const SearchResult = () => {
 
         const json = await response.json();
         if (json.status_code === 200) {
-          setList(json.result);
+          setListSearchResult(json.result);
         }
       } catch (error) {
         console.error("Error fetching search results:", error);
@@ -71,6 +72,20 @@ const SearchResult = () => {
     });
   };
 
+  const successAddFavoriteSearchResult = async () => {
+    toast.success("Success Add To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
+  const successRemoveFavoriteSearchResult = async () => {
+    toast.success("Success Remove To Favorite", {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  }
+
   return (
     <>
       <Helmet>
@@ -82,9 +97,9 @@ const SearchResult = () => {
         <HeaderPage custom={" "}></HeaderPage>
         <div className="grid grid-cols-2 gap-y-5 px-5 py-28 sm:grid-cols-3 md:grid-cols-5 md:pt-[170px] lg:grid-cols-4  lg:gap-y-20  ">
           {/* Looping dari API nya  */}
-          {list.map((product) => (
+          {listSearchResult.map((product) => (
             <div key={product.id} className="flex justify-center">
-              <Card product={product} />
+              <Card product={product} successAddFavoriteSearchResult={successAddFavoriteSearchResult} successRemoveFavoriteSearchResult={successRemoveFavoriteSearchResult} from={'SearchResult'} setListSearchResult={setListSearchResult} listSearchResult={listSearchResult}/>
             </div>
           ))}
         </div>
@@ -99,6 +114,7 @@ const SearchResult = () => {
           </button>
         )}
       </section>
+      <ToastContainer />
     </>
   );
 };
