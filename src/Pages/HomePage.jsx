@@ -1,10 +1,19 @@
+import { useRef } from "react";
 import Navbar from "../Components/Navbar";
 import LandingPage from "../Layout/LandingPage";
 import ProductSection from "../Layout/ProductSection";
 import { Helmet } from "react-helmet";
-import fidea from '../assets/fidea1.png'
+import fidea from "../assets/fidea1.png";
 
 const HomePage = () => {
+  const productRef = useRef(null);
+
+  const scrollToProduct = () => {
+    if (productRef.current) {
+      productRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -12,10 +21,12 @@ const HomePage = () => {
         <title>Home</title>
         <link rel="icon" type="image/svg+xml" href={fidea} />
       </Helmet>
-      <div className="scroll-smooth bg-[#EBEBEB] pb-10">
-        <Navbar custom="text-black p-5 sm:p-14 sm:py-10 md:bg-transparent bg-gray-50/50"></Navbar>
-        <LandingPage></LandingPage>
-        <ProductSection></ProductSection>
+      <div className="scroll-smooth">
+        <Navbar custom="text-black absolute p-5 sm:p-14 sm:py-10 md:bg-transparent bg-gray-50/50" />
+        <LandingPage scrollToProduct={scrollToProduct} />
+        <div ref={productRef}>
+          <ProductSection id="product" />
+        </div>
       </div>
     </>
   );

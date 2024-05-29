@@ -9,7 +9,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import WebLogo from "./WebLogo";
 import SearchBar from "./SearchBar";
 import Cookies from "js-cookie";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -21,7 +21,7 @@ const Navbar = (props) => {
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [activateWallet, setActivateWallet] = useState(false);
   const [wallet, setWallet] = useState(0); // State untuk ancor Popover
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState("");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -39,7 +39,7 @@ const Navbar = (props) => {
   }, []);
 
   const getTextWallet = () => {
-    if (location.pathname === '/') {
+    if (location.pathname === "/") {
       return (
         <div className="pr-2 font-bold text-[#FFFFFF]">
           Wallet : Rp. {wallet.toLocaleString()}
@@ -109,7 +109,7 @@ const Navbar = (props) => {
     if (!activateWallet) {
       const result = await apiActiveWallet();
       if (result) {
-        navigate('/login');
+        navigate("/login");
         Cookies.remove("access_token");
         Cookies.remove("refresh_token");
         setUser(null);
@@ -208,57 +208,25 @@ const Navbar = (props) => {
           <ul
             className={`${text} flex w-fit items-center gap-5 justify-self-end font-semibold drop-shadow-xl`}
           >
-            Keranjang <span> </span> <FaShoppingCart size={20} />{" "}
-          </NavLink> */}
-          <li>
-            {onLogin ? (
-              ""
-            ) : (
-              <Link
-                to="/login"
-                className="rounded-3xl bg-greenprime px-5 py-1 font-bold text-white"
-              >
-                Login
-              </Link>
-            )}
-          </li>
-          <li>
-            {onLogin === false ? (
-              ""
-            ) : (
-              <div className="flex items-center gap-1 font-normal">
-                {activateWallet ? (
-                  <div className="pr-2 font-bold text-greenprime">
-                    Wallet : Rp. {wallet.toLocaleString()}
-                  </div>
-                ) : (
-                  <button
-                    className="mr-3 rounded-xl bg-greenprime  p-2 font-semibold text-white"
-                    onClick={handleActivateWallet}
-                  >
-                    Activate Wallet
-                  </button>
-                )}
-                <div className="rounded-3xl bg-greenprime p-3 font-bold text-white">
-                  <MdPerson />
-                </div>
-                <Popover
-                  open={openPopover}
-                  anchorEl={popoverAnchorEl}
-                  onClose={handlePopoverClose}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
+            <li>
+              {onLogin ? (
+                ""
+              ) : (
+                <Link
+                  to="/login"
+                  className="rounded-3xl bg-greenprime px-5 py-1 font-bold text-white"
                 >
                   Login
                 </Link>
               )}
             </li>
+            {navLinks.map((link, index) => (
+              <li key={index}>
+                <NavLink to={link.to} className="flex gap-5 ">
+                  {link.text}
+                </NavLink>
+              </li>
+            ))}
             <li>
               {onLogin === false ? (
                 ""
@@ -300,7 +268,7 @@ const Navbar = (props) => {
                     </div>
                   </Popover>
                   <Button onClick={handlePopoverOpen}>
-                    <span className="rounded-lg bg-white/50 p-2 font-bold text-greenprime ">
+                    <span className="rounded-lg bg-white bg-opacity-50 p-2 font-bold text-greenprime ">
                       {user.username}
                     </span>
                   </Button>
@@ -310,7 +278,10 @@ const Navbar = (props) => {
           </ul>
         </div>
         <div className="h-fit w-fit pt-2 lg:hidden">
-          <button onClick={toggleDrawer(true)} className="h-fit w-fit text-black">
+          <button
+            onClick={toggleDrawer(true)}
+            className="h-fit w-fit text-black"
+          >
             <GiHamburgerMenu size={30} color="black" />
           </button>
           <Drawer
