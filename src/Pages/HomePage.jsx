@@ -13,7 +13,7 @@ const HomePage = () => {
         <link rel="icon" type="image/svg+xml" href={fidea} />
       </Helmet>
       <div className="scroll-smooth bg-[#EBEBEB] pb-10">
-        <Navbar custom="text-black p-5 sm:p-14 sm:py-10 fixed top-0 md:bg-transparent bg-gray-50/50"></Navbar>
+        <Navbar custom="text-black p-5 sm:p-14 sm:py-10 md:bg-transparent bg-gray-50/50"></Navbar>
         <LandingPage></LandingPage>
         <ProductSection></ProductSection>
       </div>
