@@ -30,7 +30,6 @@ const ProductSection = () => {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const json = await response.json();
-          console.log(json.result);
           if (json.status_code === 200) {
             setList(json.result.slice(0, 10)); // Limit to 10 items
           } else {
