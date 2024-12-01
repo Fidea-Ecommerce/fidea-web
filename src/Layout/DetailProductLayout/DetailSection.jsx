@@ -37,7 +37,7 @@ const DetailSection = ({ custom }) => {
           headers.append("Content-Type", "application/json");
           headers.append("Authorization", `Bearer ${accessToken}`);
           const response = await fetch(
-            `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/title/${store}/${storeId}/${title}`,
+            `https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/product/title/${store}/${storeId}/${title}`,
             {
               method: "GET",
               headers: headers,
@@ -68,7 +68,7 @@ const DetailSection = ({ custom }) => {
       product_id: product.product_id,
     };
     const response = await fetch(
-      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/cart",
+      "https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/cart",
       {
         method: "POST",
         headers: headers,
@@ -151,7 +151,7 @@ const DetailSection = ({ custom }) => {
       product_id: product.product_id,
     };
     const response = await fetch(
-      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      "https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/user/favorite",
       {
         method: "POST",
         headers: headers,
@@ -175,7 +175,7 @@ const DetailSection = ({ custom }) => {
       product_id: product.product_id,
     };
     const response = await fetch(
-      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      "https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/user/favorite",
       {
         method: "DELETE",
         headers: headers,

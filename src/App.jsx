@@ -1,5 +1,11 @@
-import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
+import { useState, useEffect } from "react";
 import ProductPage from "./Pages/ProductPage";
 import HomePage from "./Pages/HomePage";
 import ProductDetail from "./Pages/ProductDetail";
@@ -11,14 +17,20 @@ import ResetPassword1 from "./Pages/ResetPassword1";
 import SearchResult from "./Pages/SearchResult";
 import ResultNotFound from "./Pages/ResultNotFound";
 import Cookies from "js-cookie";
-import { jwtVerify } from 'jose';
+import { jwtVerify } from "jose";
 
 const verifyToken = async (accessToken, refreshToken) => {
   try {
-    const { payload: payloadAccessToken } = await jwtVerify(accessToken, new TextEncoder().encode('D3v1n@634824ATK'));
-    const { payload: payloadRefreshToken } = await jwtVerify(refreshToken, new TextEncoder().encode('D3v1n@634824RTK'));
+    const { payload: payloadAccessToken } = await jwtVerify(
+      accessToken,
+      new TextEncoder().encode("0895403924288"),
+    );
+    const { payload: payloadRefreshToken } = await jwtVerify(
+      refreshToken,
+      new TextEncoder().encode("0895403924288"),
+    );
     const now = Date.now() / 1000;
-    return payloadAccessToken['exp'] > now || payloadRefreshToken['exp'] > now;
+    return payloadAccessToken["exp"] > now || payloadRefreshToken["exp"] > now;
   } catch (error) {
     return false;
   }
@@ -29,15 +41,15 @@ const useAuth = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const accessToken = Cookies.get('access_token');
-      const refreshToken = Cookies.get('refresh_token');
+      const accessToken = Cookies.get("access_token");
+      const refreshToken = Cookies.get("refresh_token");
       if (!accessToken || !refreshToken) {
         setAuth(false);
       } else {
         const isValid = await verifyToken(accessToken, refreshToken);
         if (!isValid) {
-          Cookies.remove('access_token');
-          Cookies.remove('refresh_token');
+          Cookies.remove("access_token");
+          Cookies.remove("refresh_token");
         }
         setAuth(isValid);
       }
@@ -62,7 +74,7 @@ const App = () => {
   const auth = useAuth();
 
   if (auth === null) {
-    return null; 
+    return null;
   }
 
   return (
@@ -73,10 +85,16 @@ const App = () => {
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductPage />} />
-          <Route path="/products/detail/:store/:storeId/:title" element={<ProductDetail />} />
+          <Route
+            path="/products/detail/:store/:storeId/:title"
+            element={<ProductDetail />}
+          />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/resetpassword" element={<ResetPassword1 />} />
-          <Route path="/products/result/:productName" element={<SearchResult />} />
+          <Route
+            path="/products/result/:productName"
+            element={<SearchResult />}
+          />
         </Route>
         <Route path="/result/notfound" element={<ResultNotFound />} />
         <Route path="*" element={<PageNotFound />} />

@@ -112,7 +112,7 @@ const RegisterPage = () => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     const url =
-      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/register";
+      "https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/user/register";
     const data = {
       username: username,
       email: email,
@@ -142,7 +142,7 @@ const RegisterPage = () => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     const url =
-      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/email-verify";
+      "https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/user/email-verify";
     const data = {
       email: email,
     };

@@ -26,8 +26,7 @@ const LoginPage = () => {
   const apiLogin = async (email, password) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
-    const url =
-      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/login";
+    const url = "https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/user/login";
     const data = {
       email: email,
       password: password,
@@ -100,7 +99,7 @@ const LoginPage = () => {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
-                className="w-[90vw] flex-1 border-none outline-none sm:w-auto"
+                className="w-[90] flex-1 border-none outline-none sm:w-auto"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />

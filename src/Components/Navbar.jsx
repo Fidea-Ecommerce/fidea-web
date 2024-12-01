@@ -59,7 +59,7 @@ const Navbar = (props) => {
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${token}`);
     const url =
-      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/active/wallet";
+      "https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/user/active/wallet";
 
     try {
       const response = await fetch(url, {

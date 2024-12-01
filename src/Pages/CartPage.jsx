@@ -28,7 +28,7 @@ const CartPage = () => {
       headers.append("Authorization", `Bearer ${token}`);
       headers.append("Content-Type", "application/json");
       const response = await fetch(
-        `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/cart/checkout`,
+        `https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/cart/checkout`,
         {
           method: "GET",
           headers: headers,
@@ -65,7 +65,7 @@ const CartPage = () => {
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${token}`);
     const response = await fetch(
-      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/checkout",
+      "https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/product/checkout",
       {
         method: "POST",
         headers: headers,

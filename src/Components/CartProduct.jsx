@@ -72,7 +72,7 @@ const CartProduct = ({
       product_id: product.product_id,
     };
     const response = await fetch(
-      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      "https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/user/favorite",
       {
         method: "DELETE",
         headers: headers,
@@ -96,7 +96,7 @@ const CartProduct = ({
       product_id: product.product_id,
     };
     const response = await fetch(
-      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/user/favorite",
+      "https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/user/favorite",
       {
         method: "POST",
         headers: headers,
@@ -141,7 +141,7 @@ const CartProduct = ({
       amount: newAmount,
     };
     const response = await fetch(
-      "https://ecommerce-api-production-facf.up.railway.app/fidea/v1/cart/amount",
+      "https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/cart/amount",
       {
         method: "PUT",
         headers: headers,
@@ -170,7 +170,7 @@ const CartProduct = ({
       cart_id: product.cart_id,
     };
     const response = await fetch(
-      `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/cart`,
+      `https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/cart`,
       {
         method: "DELETE",
         headers: headers,

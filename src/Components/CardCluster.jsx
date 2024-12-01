@@ -2,7 +2,7 @@ import Card from "./Card";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 // require API
 const CardCluster = () => {
@@ -20,7 +20,7 @@ const CardCluster = () => {
           headers.append("Content-Type", "application/json");
           headers.append("Authorization", `Bearer ${accessToken}`);
           const response = await fetch(
-            `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/search/${store}/${storeId}/${title}`,
+            `https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/product/search/${store}/${storeId}/${title}`,
             {
               method: "GET",
               headers: headers,
@@ -31,11 +31,11 @@ const CardCluster = () => {
             setList(json.result);
           }
         } catch (error) {
-          // 
+          //
         }
       };
       fetchData();
-    }// Panggil fungsi untuk mengambil data produk saat komponen dimuat
+    } // Panggil fungsi untuk mengambil data produk saat komponen dimuat
   }, [storeId, title, store]);
 
   const successAddFavoriteCardCluester = async () => {
@@ -43,20 +43,29 @@ const CardCluster = () => {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const successRemoveFavoriteCardCluester = async () => {
     toast.success("Success Remove To Favorite", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   return (
     <div className="grid grid-cols-2 gap-y-5 px-5 py-8  sm:grid-cols-4 lg:grid-cols-4 lg:gap-y-20">
       {list.map((product) => (
         <div key={product.product_id} className="flex justify-center">
-          <Card product={product} setList={setList} list={list} from={'CardCluster'} successAddFavoriteCardCluester={successAddFavoriteCardCluester} successRemoveFavoriteCardCluester={successRemoveFavoriteCardCluester} />
+          <Card
+            product={product}
+            setList={setList}
+            list={list}
+            from={"CardCluster"}
+            successAddFavoriteCardCluester={successAddFavoriteCardCluester}
+            successRemoveFavoriteCardCluester={
+              successRemoveFavoriteCardCluester
+            }
+          />
         </div>
       ))}
     </div>

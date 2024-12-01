@@ -20,7 +20,7 @@ const ProductSection = () => {
           headers.append("Content-Type", "application/json");
           headers.append("Authorization", `Bearer ${accessToken}`);
           const response = await fetch(
-            `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/${username}/1`,
+            `https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/product/${username}/1`,
             {
               method: "GET",
               headers: headers,

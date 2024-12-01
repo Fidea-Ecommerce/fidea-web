@@ -30,7 +30,7 @@ const SearchResult = () => {
         }
 
         const response = await fetch(
-          `https://ecommerce-api-production-facf.up.railway.app/fidea/v1/product/search/${productName}`,
+          `https://9f334khh-5000.asse.devtunnels.ms/fidea/v1/product/search/${productName}`,
           {
             method: "GET",
             headers: headers,
