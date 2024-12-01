@@ -6,8 +6,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Cookies from "js-cookie";
 
-const ProductSection = () => {
-  const [list, setList] = useState([]);
+const ProductSection = ({successAddFavoriteHomePage, successRemoveFavoriteHomePage}) => {
+  const [listHomePage, setListHomePage] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -31,7 +31,7 @@ const ProductSection = () => {
           }
           const json = await response.json();
           if (json.status_code === 200) {
-            setList(json.result.slice(0, 10)); // Limit to 10 items
+            setListHomePage(json.result.slice(0, 10)); // Limit to 10 items
           } else {
             throw new Error("Failed to fetch products");
           }
@@ -104,12 +104,12 @@ const ProductSection = () => {
                 {...settings}
                 className="ml-5 flex items-center justify-center"
               >
-                {list.map((product) => (
+                {listHomePage.map((product) => (
                   <div
                     key={product.product_id}
                     className="flex justify-center p-2"
                   >
-                    <Card product={product} />
+                    <Card product={product} successAddFavoriteHomePage={successAddFavoriteHomePage} successRemoveFavoriteHomePage={successRemoveFavoriteHomePage} listHomePage={listHomePage} setListHomePage={setListHomePage} from={'HomePage'}/>
                   </div>
                 ))}
               </Slider>
