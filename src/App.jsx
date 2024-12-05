@@ -23,11 +23,11 @@ const verifyToken = async (accessToken, refreshToken) => {
   try {
     const { payload: payloadAccessToken } = await jwtVerify(
       accessToken,
-      new TextEncoder().encode("0895403924288"),
+      new TextEncoder().encode("12345"),
     );
     const { payload: payloadRefreshToken } = await jwtVerify(
       refreshToken,
-      new TextEncoder().encode("0895403924288"),
+      new TextEncoder().encode("12345"),
     );
     const now = Date.now() / 1000;
     return payloadAccessToken["exp"] > now || payloadRefreshToken["exp"] > now;
