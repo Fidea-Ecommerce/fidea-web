@@ -99,7 +99,7 @@ const LoginPage = () => {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
-                className="w-[90] flex-1 border-none outline-none sm:w-auto"
+                className="w-full flex-1 border-none outline-none sm:w-auto"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />

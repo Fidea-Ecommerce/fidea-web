@@ -4,9 +4,9 @@ import HeaderPage from "../Layout/HeaderPage";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Helmet } from "react-helmet";
-import fidea from '../assets/fidea1.png'
-import { ToastContainer } from 'react-toastify';
-import { toast } from 'react-toastify';
+import fidea from "../assets/fidea1.png";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 const ProductPage = () => {
   const [listProductPage, setListProductPage] = useState([]);
@@ -73,14 +73,14 @@ const ProductPage = () => {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const successRemoveFavoriteProductPage = async () => {
     toast.success("Success Remove To Favorite", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   return (
     <>
@@ -96,7 +96,16 @@ const ProductPage = () => {
             {/* Looping dari API nya  */}
             {listProductPage.map((product) => (
               <div key={product.product_id} className="flex justify-center">
-                <Card successAddFavoriteProductPage={successAddFavoriteProductPage} successRemoveFavoriteProductPage={successRemoveFavoriteProductPage} product={product} listProductPage={listProductPage} setListProductPage={setListProductPage} from={'ProductPage'} />
+                <Card
+                  successAddFavoriteProductPage={successAddFavoriteProductPage}
+                  successRemoveFavoriteProductPage={
+                    successRemoveFavoriteProductPage
+                  }
+                  product={product}
+                  listProductPage={listProductPage}
+                  setListProductPage={setListProductPage}
+                  from={"ProductPage"}
+                />
               </div>
             ))}
           </div>

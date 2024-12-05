@@ -39,7 +39,7 @@ const RegisterPage = () => {
   };
 
   const failedRegister = async () => {
-    toast.success("Failed Register", {
+    toast.error("Failed Register", {
       position: "bottom-right",
     });
   };
