@@ -89,7 +89,7 @@ const ProductPage = () => {
         <title>Product</title>
         <link rel="icon" type="image/svg+xml" href={fidea} />
       </Helmet>
-      <section className="h-auto min-h-screen  w-full bg-[#EBEBEB] ">
+      <section className="mx-auto h-auto min-h-screen w-screen max-w-screen-2xl bg-[#EBEBEB] ">
         <HeaderPage custom={" "}></HeaderPage>
         {onLogin ? (
           <div className="grid grid-cols-2 gap-y-5 px-5 py-8 pb-28 pt-28 sm:grid-cols-3 md:grid-cols-5 md:pt-[170px] lg:grid-cols-4  lg:gap-y-20  ">

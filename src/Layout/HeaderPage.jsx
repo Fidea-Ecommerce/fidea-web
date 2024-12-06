@@ -7,9 +7,9 @@ const HeaderPage = ({ custom }) => {
   return (
     <div>
       <section
-        className={`${custom} fixed top-0  z-10 h-auto w-full border-b  border-slate-300 bg-[#EBEBEB] pb-2  lg:pb-5 `}
+        className={`${custom} fixed left-0 top-0  z-10 h-auto w-full border-b  border-slate-300 bg-[#EBEBEB] pb-2  lg:pb-5 `}
       >
-        <Navbar custom=" p-2 md:p-5 lg:px-14" text="text-black" />
+        <Navbar custom="  mx-auto p-2 md:p-5 lg:px-14" text="text-black" />
         <div className="flex w-full items-center justify-center lg:justify-start">
           <Navtab custom={"mt-0"}></Navtab>
           {/* <Link

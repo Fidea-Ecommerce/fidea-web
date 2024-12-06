@@ -6,7 +6,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Cookies from "js-cookie";
 
-const ProductSection = ({successAddFavoriteHomePage, successRemoveFavoriteHomePage}) => {
+const ProductSection = ({
+  successAddFavoriteHomePage,
+  successRemoveFavoriteHomePage,
+}) => {
   const [listHomePage, setListHomePage] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -54,9 +57,9 @@ const ProductSection = ({successAddFavoriteHomePage, successRemoveFavoriteHomePa
     slidesToScroll: 3,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1080,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 3,
           slidesToScroll: 1,
           infinite: true,
         },
@@ -64,7 +67,7 @@ const ProductSection = ({successAddFavoriteHomePage, successRemoveFavoriteHomePa
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 3,
           slidesToScroll: 1,
           arrowarrows: false,
         },
@@ -109,7 +112,16 @@ const ProductSection = ({successAddFavoriteHomePage, successRemoveFavoriteHomePa
                     key={product.product_id}
                     className="flex justify-center p-2"
                   >
-                    <Card product={product} successAddFavoriteHomePage={successAddFavoriteHomePage} successRemoveFavoriteHomePage={successRemoveFavoriteHomePage} listHomePage={listHomePage} setListHomePage={setListHomePage} from={'HomePage'}/>
+                    <Card
+                      product={product}
+                      successAddFavoriteHomePage={successAddFavoriteHomePage}
+                      successRemoveFavoriteHomePage={
+                        successRemoveFavoriteHomePage
+                      }
+                      listHomePage={listHomePage}
+                      setListHomePage={setListHomePage}
+                      from={"HomePage"}
+                    />
                   </div>
                 ))}
               </Slider>

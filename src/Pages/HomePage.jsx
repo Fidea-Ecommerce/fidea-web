@@ -20,14 +20,14 @@ const HomePage = () => {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   const successRemoveFavoriteHomePage = async () => {
     toast.success("Success Remove To Favorite", {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }
+  };
 
   return (
     <>
@@ -40,7 +40,11 @@ const HomePage = () => {
         <Navbar custom="text-black absolute p-5 sm:p-14 sm:py-10 md:bg-transparent bg-gray-50/50" />
         <LandingPage scrollToProduct={scrollToProduct} />
         <div ref={productRef}>
-          <ProductSection id="product" successAddFavoriteHomePage={successAddFavoriteHomePage} successRemoveFavoriteHomePage={successRemoveFavoriteHomePage}/>
+          <ProductSection
+            id="product"
+            successAddFavoriteHomePage={successAddFavoriteHomePage}
+            successRemoveFavoriteHomePage={successRemoveFavoriteHomePage}
+          />
         </div>
       </div>
       <ToastContainer />
